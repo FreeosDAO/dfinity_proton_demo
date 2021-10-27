@@ -1,3 +1,9 @@
+# node-sepecific
+node_modules/
+
+# Mac
+.DS_Store
+
 # Prerequisites
 *.d
 

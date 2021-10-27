@@ -1,2 +1,6 @@
-# dfinity_proton_demo
-dfinity proton switch demo
+After cloning, cd into the dfinity_proton_demo directory, then:
+
+npm install
+dfx deploy
+npm run start
+
