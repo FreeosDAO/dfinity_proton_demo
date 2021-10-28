@@ -87,7 +87,7 @@ let link, session;
 async function createLink({ restoreSession }) {
   const result = await ConnectWallet({
     linkOptions: {
-      endpoints: ["https://protontestnet.greymass.com"],
+      endpoints: ["https://proton.greymass.com"],
       restoreSession,
     },
     transportOptions: {
