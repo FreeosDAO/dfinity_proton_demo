@@ -20,6 +20,21 @@ actor {
         return proton_account # " / " # principal_id # " (" # Nat.toText(numusers) # " users)";
     };
 
+    public func getuser(name : Text) : async Text {
+
+        let p_id = users.get(name);
+
+        switch(p_id) {
+            case(?existingEntry) {
+                return existingEntry;
+            };
+            case(null) { 
+                return name # " not found";
+            };
+        };
+    };
+
+    
     public func getusers() : async Text {
 
         let numusers = users.size();
