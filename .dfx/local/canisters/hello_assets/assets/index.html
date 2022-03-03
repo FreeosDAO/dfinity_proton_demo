@@ -9,31 +9,35 @@
     <link type="text/css" rel="stylesheet" href="main.css" />
 <script defer src="index.js"></script></head>
 <body>
-    <img src="logo.png" alt="DFINITY logo" />
+    <img src="dfinity_proton.JPG" alt="DFINITY Proton logo" />
 
-    <section>
-        <button id="dfinitySignInBtn">dfinity Sign In</button>
-        <p id="principal_id"></p>
-    </section>
+    <table class="d">
+        <colgroup>
+            <col span="1" style="width: 15%;">
+            <col span="1" style="width: 70%;">
+         </colgroup>
+         
+        <tr>
+          <td><button id="dfinitySignInBtn">IC Sign In</button></td>
+          <td><p class="response" id="principal_id"></p></td>
+        </tr>
+        <tr>
+          <td><button id="protonSignInBtn">Proton Sign In</button></td>
+          <td><p class="response" id="proton_account"></p></td>
+        </tr>
+        <tr>
+          <td><button id="storeBTCpriceBtn">Store BTC price</button></td>
+          <td><p class="response" id="BTCprice"></p></td>
+        </tr>
+        <tr>
+          <td><button id="storeUserDfinityBtn">Store User (IC)</button></td>
+          <td><p class="response" id="storeDfinityResult"></p></td>
+        </tr>
+        <tr>
+          <td><button id="storeUserProtonBtn">Store User (Proton)</button></td>
+          <td><p class="response" id="storeProtonResult"></p></td>
+        </tr>
+      </table>
 
-    <section>
-        <button id="protonSignInBtn">Proton Sign In</button>
-        <p id="proton_account"></p>
-    </section>
-
-    <section>
-        <button id="storeBTCpriceBtn">Store BTC price</button>
-        <p id="BTCprice"></p>
-    </section>
-
-    <section>
-        <button id="storeUserDfinityBtn">Store User (dfinity)</button>
-        <p id="storeDfinityResult"></p>
-    </section>
-
-    <section>
-        <button id="storeUserProtonBtn">Store User (Proton)</button>
-        <p id="storeProtonResult"></p>
-    </section>
 </body>
 </html>

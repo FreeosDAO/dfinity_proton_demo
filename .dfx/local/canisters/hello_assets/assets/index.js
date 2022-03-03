@@ -96612,6 +96612,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 const idlFactory = ({ IDL }) => {
   return IDL.Service({
+    'getuser' : IDL.Func([IDL.Text], [IDL.Text], []),
     'getusers' : IDL.Func([], [IDL.Text], []),
     'greet' : IDL.Func([IDL.Text], [IDL.Text], []),
     'storeid' : IDL.Func([IDL.Text, IDL.Text], [IDL.Text], []),
@@ -96644,7 +96645,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 // CANISTER_ID is replaced by webpack based on node environment
-const canisterId = "rno2w-sqaaa-aaaaa-aaacq-cai";
+const canisterId = "rwlgt-iiaaa-aaaaa-aaaaa-cai";
 
 /**
  * 
@@ -96906,7 +96907,7 @@ let link, session;
 async function createLink({ restoreSession }) {
   const result = await (0,_proton_web_sdk__WEBPACK_IMPORTED_MODULE_1__.ConnectWallet)({
     linkOptions: {
-      endpoints: ["https://protontestnet.greymass.com"],
+      endpoints: ["https://proton.greymass.com"],
       restoreSession,
     },
     transportOptions: {
