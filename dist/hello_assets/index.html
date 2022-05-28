@@ -11,31 +11,77 @@
 <body>
     <img src="dfinity_proton.JPG" alt="DFINITY Proton logo" />
 
+    <div class="box-container">
+			<div class="balancebox">
+				<div class="boxtitle">IC Balance</div>
+				<div class="balance" id="ic_balance">0</div>
+				<div class="currency">POINT</div>
+			</div>
+			<div></div>
+			<div class="balancebox">
+				<div class="boxtitle">Proton Balance</div>
+				<div class="balance" id="proton_balance">0</div>
+				<div class="currency">POINT</div>
+			</div>
+      </div><hr/>
+
     <table class="d">
         <colgroup>
             <col span="1" style="width: 15%;">
-            <col span="1" style="width: 70%;">
+            <col span="1" style="width: 85%;">
          </colgroup>
          
         <tr>
           <td><button id="dfinitySignInBtn">IC Sign In</button></td>
-          <td><p class="response" id="principal_id"></p></td>
+          <td><div class="response" id="principal_id"></div></td>
         </tr>
         <tr>
           <td><button id="protonSignInBtn">Proton Sign In</button></td>
-          <td><p class="response" id="proton_account"></p></td>
+          <td><div class="response" id="proton_account"></div></td>
+        </tr>
+        <tr>
+          <td><button id="mintBtn">Mint</button></td>
+          <td><div class="response" id="mintResult"></div></td>
         </tr>
         <tr>
           <td><button id="storeBTCpriceBtn">Store BTC price</button></td>
-          <td><p class="response" id="BTCprice"></p></td>
+          <td><div class="response" id="BTCprice"></div></td>
+        </tr>
+      </table>
+
+      <br>
+
+      <table class="functions" id="functionTable">
+          <colgroup>
+            <col span="1" style="width: 15%;">
+            <col span="1" style="width: 85%;">
+        </colgroup>
+
+        <tr>
+          <td><button id="registerBtn">Register</button></td>
+          <td><div class="response" id="registerResult"></div></td>
+        </tr>
+
+        <tr>
+          <td><button id="dfinityGetBtn">IC User Info</button></td>
+          <td><div class="response" id="dfinityGetResult"></div></td>
         </tr>
         <tr>
-          <td><button id="storeUserDfinityBtn">Store User (IC)</button></td>
-          <td><p class="response" id="storeDfinityResult"></p></td>
+          <td><button id="protonGetBtn">Proton User Info</button></td>
+          <td><div class="response" id="protonGetResult"></div></td>
         </tr>
         <tr>
-          <td><button id="storeUserProtonBtn">Store User (Proton)</button></td>
-          <td><p class="response" id="storeProtonResult"></p></td>
+          <td><button id="claimBtn">Claim</button></td>
+          <td><div class="response" id="claimResult"></div></td>
+        </tr>
+        <tr>
+          <td>
+            <label for="chain">Switch to chain:</label>
+            <select name="chain" id="chainSelect">
+              <option value="dfinity">dfinity</option>
+              <option value="proton">Proton</option>
+            </select>
+          </td>
         </tr>
       </table>
 

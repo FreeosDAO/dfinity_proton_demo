@@ -1,7 +1,13 @@
 import type { Principal } from '@dfinity/principal';
+import type { ActorMethod } from '@dfinity/agent';
+
 export interface _SERVICE {
-  'getuser' : (arg_0: string) => Promise<string>,
-  'getusers' : () => Promise<string>,
-  'greet' : (arg_0: string) => Promise<string>,
-  'storeid' : (arg_0: string, arg_1: string) => Promise<string>,
+  'claim' : ActorMethod<[string], string>,
+  'fetchuser' : ActorMethod<[string], string>,
+  'get_balance' : ActorMethod<[string], string>,
+  'getnumusers' : ActorMethod<[], string>,
+  'greet' : ActorMethod<[string], string>,
+  'inc' : ActorMethod<[], Principal>,
+  'storeuser' : ActorMethod<[string, string, string], string>,
+  'switchuser' : ActorMethod<[string, string], string>,
 }

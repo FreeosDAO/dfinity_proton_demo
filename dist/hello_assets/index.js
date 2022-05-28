@@ -64896,6 +64896,3250 @@ function randomBytes (size, cb) {
 
 /***/ }),
 
+/***/ "./node_modules/eosjs/dist/eosjs-api-interfaces.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/eosjs/dist/eosjs-api-interfaces.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+/**
+ * @module Javascript-API
+ * copyright defined in eosjs/LICENSE.txt
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+//# sourceMappingURL=eosjs-api-interfaces.js.map
+
+/***/ }),
+
+/***/ "./node_modules/eosjs/dist/eosjs-api.js":
+/*!**********************************************!*\
+  !*** ./node_modules/eosjs/dist/eosjs-api.js ***!
+  \**********************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+/**
+ * @module API
+ */
+// copyright defined in eosjs/LICENSE.txt
+/* eslint-disable max-classes-per-file */
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
+var __spreadArray = (this && this.__spreadArray) || function (to, from) {
+    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+        to[j] = from[i];
+    return to;
+};
+var __values = (this && this.__values) || function(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Api = void 0;
+var pako_1 = __webpack_require__(/*! pako */ "./node_modules/pako/index.js");
+var ser = __webpack_require__(/*! ./eosjs-serialize */ "./node_modules/eosjs/dist/eosjs-serialize.js");
+var abiAbi = __webpack_require__(/*! ../src/abi.abi.json */ "./node_modules/eosjs/src/abi.abi.json");
+var transactionAbi = __webpack_require__(/*! ../src/transaction.abi.json */ "./node_modules/eosjs/src/transaction.abi.json");
+var Api = /** @class */ (function () {
+    /**
+     * @param args
+     * * `rpc`: Issues RPC calls
+     * * `authorityProvider`: Get public keys needed to meet authorities in a transaction
+     * * `abiProvider`: Supplies ABIs in raw form (binary)
+     * * `signatureProvider`: Signs transactions
+     * * `chainId`: Identifies chain
+     * * `textEncoder`: `TextEncoder` instance to use. Pass in `null` if running in a browser
+     * * `textDecoder`: `TextDecoder` instance to use. Pass in `null` if running in a browser
+     */
+    function Api(args) {
+        /** Holds information needed to serialize contract actions */
+        this.contracts = new Map();
+        /** Fetched abis */
+        this.cachedAbis = new Map();
+        this.rpc = args.rpc;
+        this.authorityProvider = args.authorityProvider || args.rpc;
+        this.abiProvider = args.abiProvider || args.rpc;
+        this.signatureProvider = args.signatureProvider;
+        this.chainId = args.chainId;
+        this.textEncoder = args.textEncoder;
+        this.textDecoder = args.textDecoder;
+        this.abiTypes = ser.getTypesFromAbi(ser.createInitialTypes(), abiAbi);
+        this.transactionTypes = ser.getTypesFromAbi(ser.createInitialTypes(), transactionAbi);
+    }
+    /** Decodes an abi as Uint8Array into json. */
+    Api.prototype.rawAbiToJson = function (rawAbi) {
+        var buffer = new ser.SerialBuffer({
+            textEncoder: this.textEncoder,
+            textDecoder: this.textDecoder,
+            array: rawAbi,
+        });
+        if (!ser.supportedAbiVersion(buffer.getString())) {
+            throw new Error('Unsupported abi version');
+        }
+        buffer.restartRead();
+        return this.abiTypes.get('abi_def').deserialize(buffer);
+    };
+    /** Encodes a json abi as Uint8Array. */
+    Api.prototype.jsonToRawAbi = function (jsonAbi) {
+        var buffer = new ser.SerialBuffer({
+            textEncoder: this.textEncoder,
+            textDecoder: this.textDecoder,
+        });
+        this.abiTypes.get('abi_def').serialize(buffer, jsonAbi);
+        if (!ser.supportedAbiVersion(buffer.getString())) {
+            throw new Error('Unsupported abi version');
+        }
+        return buffer.asUint8Array();
+    };
+    /** Get abi in both binary and structured forms. Fetch when needed. */
+    Api.prototype.getCachedAbi = function (accountName, reload) {
+        if (reload === void 0) { reload = false; }
+        return __awaiter(this, void 0, void 0, function () {
+            var cachedAbi, rawAbi, abi, e_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!reload && this.cachedAbis.get(accountName)) {
+                            return [2 /*return*/, this.cachedAbis.get(accountName)];
+                        }
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, this.abiProvider.getRawAbi(accountName)];
+                    case 2:
+                        rawAbi = (_a.sent()).abi;
+                        abi = this.rawAbiToJson(rawAbi);
+                        cachedAbi = { rawAbi: rawAbi, abi: abi };
+                        return [3 /*break*/, 4];
+                    case 3:
+                        e_1 = _a.sent();
+                        e_1.message = "fetching abi for " + accountName + ": " + e_1.message;
+                        throw e_1;
+                    case 4:
+                        if (!cachedAbi) {
+                            throw new Error("Missing abi for " + accountName);
+                        }
+                        this.cachedAbis.set(accountName, cachedAbi);
+                        return [2 /*return*/, cachedAbi];
+                }
+            });
+        });
+    };
+    /** Get abi in structured form. Fetch when needed. */
+    Api.prototype.getAbi = function (accountName, reload) {
+        if (reload === void 0) { reload = false; }
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getCachedAbi(accountName, reload)];
+                    case 1: return [2 /*return*/, (_a.sent()).abi];
+                }
+            });
+        });
+    };
+    /** Get abis needed by a transaction */
+    Api.prototype.getTransactionAbis = function (transaction, reload) {
+        if (reload === void 0) { reload = false; }
+        return __awaiter(this, void 0, void 0, function () {
+            var actions, accounts, uniqueAccounts, actionPromises;
+            var _this = this;
+            return __generator(this, function (_a) {
+                actions = (transaction.context_free_actions || []).concat(transaction.actions);
+                accounts = actions.map(function (action) { return action.account; });
+                uniqueAccounts = new Set(accounts);
+                actionPromises = __spreadArray([], __read(uniqueAccounts)).map(function (account) { return __awaiter(_this, void 0, void 0, function () {
+                    var _a;
+                    return __generator(this, function (_b) {
+                        switch (_b.label) {
+                            case 0:
+                                _a = {
+                                    accountName: account
+                                };
+                                return [4 /*yield*/, this.getCachedAbi(account, reload)];
+                            case 1: return [2 /*return*/, (_a.abi = (_b.sent()).rawAbi,
+                                    _a)];
+                        }
+                    });
+                }); });
+                return [2 /*return*/, Promise.all(actionPromises)];
+            });
+        });
+    };
+    /** Get data needed to serialize actions in a contract */
+    Api.prototype.getContract = function (accountName, reload) {
+        if (reload === void 0) { reload = false; }
+        return __awaiter(this, void 0, void 0, function () {
+            var abi, types, actions, _a, _b, _c, name_1, type, result;
+            var e_2, _d;
+            return __generator(this, function (_e) {
+                switch (_e.label) {
+                    case 0:
+                        if (!reload && this.contracts.get(accountName)) {
+                            return [2 /*return*/, this.contracts.get(accountName)];
+                        }
+                        return [4 /*yield*/, this.getAbi(accountName, reload)];
+                    case 1:
+                        abi = _e.sent();
+                        types = ser.getTypesFromAbi(ser.createInitialTypes(), abi);
+                        actions = new Map();
+                        try {
+                            for (_a = __values(abi.actions), _b = _a.next(); !_b.done; _b = _a.next()) {
+                                _c = _b.value, name_1 = _c.name, type = _c.type;
+                                actions.set(name_1, ser.getType(types, type));
+                            }
+                        }
+                        catch (e_2_1) { e_2 = { error: e_2_1 }; }
+                        finally {
+                            try {
+                                if (_b && !_b.done && (_d = _a.return)) _d.call(_a);
+                            }
+                            finally { if (e_2) throw e_2.error; }
+                        }
+                        result = { types: types, actions: actions };
+                        this.contracts.set(accountName, result);
+                        return [2 /*return*/, result];
+                }
+            });
+        });
+    };
+    /** Convert `value` to binary form. `type` must be a built-in abi type or in `transaction.abi.json`. */
+    Api.prototype.serialize = function (buffer, type, value) {
+        this.transactionTypes.get(type).serialize(buffer, value);
+    };
+    /** Convert data in `buffer` to structured form. `type` must be a built-in abi type or in `transaction.abi.json`. */
+    Api.prototype.deserialize = function (buffer, type) {
+        return this.transactionTypes.get(type).deserialize(buffer);
+    };
+    /** Convert a transaction to binary */
+    Api.prototype.serializeTransaction = function (transaction) {
+        var buffer = new ser.SerialBuffer({ textEncoder: this.textEncoder, textDecoder: this.textDecoder });
+        this.serialize(buffer, 'transaction', __assign({ max_net_usage_words: 0, max_cpu_usage_ms: 0, delay_sec: 0, context_free_actions: [], actions: [], transaction_extensions: [] }, transaction));
+        return buffer.asUint8Array();
+    };
+    /** Serialize context-free data */
+    Api.prototype.serializeContextFreeData = function (contextFreeData) {
+        var e_3, _a;
+        if (!contextFreeData || !contextFreeData.length) {
+            return null;
+        }
+        var buffer = new ser.SerialBuffer({ textEncoder: this.textEncoder, textDecoder: this.textDecoder });
+        buffer.pushVaruint32(contextFreeData.length);
+        try {
+            for (var contextFreeData_1 = __values(contextFreeData), contextFreeData_1_1 = contextFreeData_1.next(); !contextFreeData_1_1.done; contextFreeData_1_1 = contextFreeData_1.next()) {
+                var data = contextFreeData_1_1.value;
+                buffer.pushBytes(data);
+            }
+        }
+        catch (e_3_1) { e_3 = { error: e_3_1 }; }
+        finally {
+            try {
+                if (contextFreeData_1_1 && !contextFreeData_1_1.done && (_a = contextFreeData_1.return)) _a.call(contextFreeData_1);
+            }
+            finally { if (e_3) throw e_3.error; }
+        }
+        return buffer.asUint8Array();
+    };
+    /** Convert a transaction from binary. Leaves actions in hex. */
+    Api.prototype.deserializeTransaction = function (transaction) {
+        var buffer = new ser.SerialBuffer({ textEncoder: this.textEncoder, textDecoder: this.textDecoder });
+        buffer.pushArray(transaction);
+        return this.deserialize(buffer, 'transaction');
+    };
+    /** Convert actions to hex */
+    Api.prototype.serializeActions = function (actions) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, Promise.all(actions.map(function (_a) {
+                            var account = _a.account, name = _a.name, authorization = _a.authorization, data = _a.data;
+                            return __awaiter(_this, void 0, void 0, function () {
+                                var contract;
+                                return __generator(this, function (_b) {
+                                    switch (_b.label) {
+                                        case 0: return [4 /*yield*/, this.getContract(account)];
+                                        case 1:
+                                            contract = _b.sent();
+                                            return [2 /*return*/, ser.serializeAction(contract, account, name, authorization, data, this.textEncoder, this.textDecoder)];
+                                    }
+                                });
+                            });
+                        }))];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    /** Convert actions from hex */
+    Api.prototype.deserializeActions = function (actions) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, Promise.all(actions.map(function (_a) {
+                            var account = _a.account, name = _a.name, authorization = _a.authorization, data = _a.data;
+                            return __awaiter(_this, void 0, void 0, function () {
+                                var contract;
+                                return __generator(this, function (_b) {
+                                    switch (_b.label) {
+                                        case 0: return [4 /*yield*/, this.getContract(account)];
+                                        case 1:
+                                            contract = _b.sent();
+                                            return [2 /*return*/, ser.deserializeAction(contract, account, name, authorization, data, this.textEncoder, this.textDecoder)];
+                                    }
+                                });
+                            });
+                        }))];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    /** Convert a transaction from binary. Also deserializes actions. */
+    Api.prototype.deserializeTransactionWithActions = function (transaction) {
+        return __awaiter(this, void 0, void 0, function () {
+            var deserializedTransaction, deserializedCFActions, deserializedActions;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (typeof transaction === 'string') {
+                            transaction = ser.hexToUint8Array(transaction);
+                        }
+                        deserializedTransaction = this.deserializeTransaction(transaction);
+                        return [4 /*yield*/, this.deserializeActions(deserializedTransaction.context_free_actions)];
+                    case 1:
+                        deserializedCFActions = _a.sent();
+                        return [4 /*yield*/, this.deserializeActions(deserializedTransaction.actions)];
+                    case 2:
+                        deserializedActions = _a.sent();
+                        return [2 /*return*/, __assign(__assign({}, deserializedTransaction), { context_free_actions: deserializedCFActions, actions: deserializedActions })];
+                }
+            });
+        });
+    };
+    /** Deflate a serialized object */
+    Api.prototype.deflateSerializedArray = function (serializedArray) {
+        return pako_1.deflate(serializedArray, { level: 9 });
+    };
+    /** Inflate a compressed serialized object */
+    Api.prototype.inflateSerializedArray = function (compressedSerializedArray) {
+        return pako_1.inflate(compressedSerializedArray);
+    };
+    /**
+     * Create and optionally broadcast a transaction.
+     *
+     * Named Parameters:
+     * `broadcast`: broadcast this transaction?
+     * `sign`: sign this transaction?
+     * `compression`: compress this transaction?
+     *
+     * If both `blocksBehind` and `expireSeconds` are present,
+     * then fetch the block which is `blocksBehind` behind head block,
+     * use it as a reference for TAPoS, and expire the transaction `expireSeconds` after that block's time.
+     *
+     * If both `useLastIrreversible` and `expireSeconds` are present,
+     * then fetch the last irreversible block, use it as a reference for TAPoS,
+     * and expire the transaction `expireSeconds` after that block's time.
+     *
+     * @returns node response if `broadcast`, `{signatures, serializedTransaction}` if `!broadcast`
+     */
+    Api.prototype.transact = function (transaction, _a) {
+        var _b = _a === void 0 ? {} : _a, _c = _b.broadcast, broadcast = _c === void 0 ? true : _c, _d = _b.sign, sign = _d === void 0 ? true : _d, compression = _b.compression, blocksBehind = _b.blocksBehind, useLastIrreversible = _b.useLastIrreversible, expireSeconds = _b.expireSeconds;
+        return __awaiter(this, void 0, void 0, function () {
+            var info, abis, _e, serializedTransaction, serializedContextFreeData, pushTransactionArgs, availableKeys, requiredKeys;
+            var _f;
+            return __generator(this, function (_g) {
+                switch (_g.label) {
+                    case 0:
+                        if (typeof blocksBehind === 'number' && useLastIrreversible) {
+                            throw new Error('Use either blocksBehind or useLastIrreversible');
+                        }
+                        if (!!this.chainId) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.rpc.get_info()];
+                    case 1:
+                        info = _g.sent();
+                        this.chainId = info.chain_id;
+                        _g.label = 2;
+                    case 2:
+                        if (!((typeof blocksBehind === 'number' || useLastIrreversible) && expireSeconds)) return [3 /*break*/, 4];
+                        return [4 /*yield*/, this.generateTapos(info, transaction, blocksBehind, useLastIrreversible, expireSeconds)];
+                    case 3:
+                        transaction = _g.sent();
+                        _g.label = 4;
+                    case 4:
+                        if (!this.hasRequiredTaposFields(transaction)) {
+                            throw new Error('Required configuration or TAPOS fields are not present');
+                        }
+                        return [4 /*yield*/, this.getTransactionAbis(transaction)];
+                    case 5:
+                        abis = _g.sent();
+                        _e = [__assign({}, transaction)];
+                        _f = {};
+                        return [4 /*yield*/, this.serializeActions(transaction.context_free_actions || [])];
+                    case 6:
+                        _f.context_free_actions = _g.sent();
+                        return [4 /*yield*/, this.serializeActions(transaction.actions)];
+                    case 7:
+                        transaction = __assign.apply(void 0, _e.concat([(_f.actions = _g.sent(), _f)]));
+                        serializedTransaction = this.serializeTransaction(transaction);
+                        serializedContextFreeData = this.serializeContextFreeData(transaction.context_free_data);
+                        pushTransactionArgs = {
+                            serializedTransaction: serializedTransaction, serializedContextFreeData: serializedContextFreeData,
+                            signatures: []
+                        };
+                        if (!sign) return [3 /*break*/, 11];
+                        return [4 /*yield*/, this.signatureProvider.getAvailableKeys()];
+                    case 8:
+                        availableKeys = _g.sent();
+                        return [4 /*yield*/, this.authorityProvider.getRequiredKeys({ transaction: transaction, availableKeys: availableKeys })];
+                    case 9:
+                        requiredKeys = _g.sent();
+                        return [4 /*yield*/, this.signatureProvider.sign({
+                                chainId: this.chainId,
+                                requiredKeys: requiredKeys,
+                                serializedTransaction: serializedTransaction,
+                                serializedContextFreeData: serializedContextFreeData,
+                                abis: abis,
+                            })];
+                    case 10:
+                        pushTransactionArgs = _g.sent();
+                        _g.label = 11;
+                    case 11:
+                        if (broadcast) {
+                            if (compression) {
+                                return [2 /*return*/, this.pushCompressedSignedTransaction(pushTransactionArgs)];
+                            }
+                            return [2 /*return*/, this.pushSignedTransaction(pushTransactionArgs)];
+                        }
+                        return [2 /*return*/, pushTransactionArgs];
+                }
+            });
+        });
+    };
+    /** Broadcast a signed transaction */
+    Api.prototype.pushSignedTransaction = function (_a) {
+        var signatures = _a.signatures, serializedTransaction = _a.serializedTransaction, serializedContextFreeData = _a.serializedContextFreeData;
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_b) {
+                return [2 /*return*/, this.rpc.push_transaction({
+                        signatures: signatures,
+                        serializedTransaction: serializedTransaction,
+                        serializedContextFreeData: serializedContextFreeData
+                    })];
+            });
+        });
+    };
+    Api.prototype.pushCompressedSignedTransaction = function (_a) {
+        var signatures = _a.signatures, serializedTransaction = _a.serializedTransaction, serializedContextFreeData = _a.serializedContextFreeData;
+        return __awaiter(this, void 0, void 0, function () {
+            var compressedSerializedTransaction, compressedSerializedContextFreeData;
+            return __generator(this, function (_b) {
+                compressedSerializedTransaction = this.deflateSerializedArray(serializedTransaction);
+                compressedSerializedContextFreeData = this.deflateSerializedArray(serializedContextFreeData || new Uint8Array(0));
+                return [2 /*return*/, this.rpc.push_transaction({
+                        signatures: signatures,
+                        compression: 1,
+                        serializedTransaction: compressedSerializedTransaction,
+                        serializedContextFreeData: compressedSerializedContextFreeData
+                    })];
+            });
+        });
+    };
+    Api.prototype.generateTapos = function (info, transaction, blocksBehind, useLastIrreversible, expireSeconds) {
+        return __awaiter(this, void 0, void 0, function () {
+            var taposBlockNumber, refBlock, _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        if (!!info) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.rpc.get_info()];
+                    case 1:
+                        info = _b.sent();
+                        _b.label = 2;
+                    case 2:
+                        taposBlockNumber = useLastIrreversible
+                            ? info.last_irreversible_block_num : info.head_block_num - blocksBehind;
+                        if (!(taposBlockNumber <= info.last_irreversible_block_num)) return [3 /*break*/, 4];
+                        return [4 /*yield*/, this.rpc.get_block(taposBlockNumber)];
+                    case 3:
+                        _a = _b.sent();
+                        return [3 /*break*/, 6];
+                    case 4: return [4 /*yield*/, this.tryGetBlockHeaderState(taposBlockNumber)];
+                    case 5:
+                        _a = _b.sent();
+                        _b.label = 6;
+                    case 6:
+                        refBlock = _a;
+                        return [2 /*return*/, __assign(__assign({}, ser.transactionHeader(refBlock, expireSeconds)), transaction)];
+                }
+            });
+        });
+    };
+    // eventually break out into TransactionValidator class
+    Api.prototype.hasRequiredTaposFields = function (_a) {
+        var expiration = _a.expiration, ref_block_num = _a.ref_block_num, ref_block_prefix = _a.ref_block_prefix;
+        return !!(expiration && typeof (ref_block_num) === 'number' && typeof (ref_block_prefix) === 'number');
+    };
+    Api.prototype.tryGetBlockHeaderState = function (taposBlockNumber) {
+        return __awaiter(this, void 0, void 0, function () {
+            var error_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 4]);
+                        return [4 /*yield*/, this.rpc.get_block_header_state(taposBlockNumber)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                    case 2:
+                        error_1 = _a.sent();
+                        return [4 /*yield*/, this.rpc.get_block(taposBlockNumber)];
+                    case 3: return [2 /*return*/, _a.sent()];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    return Api;
+}()); // Api
+exports.Api = Api;
+//# sourceMappingURL=eosjs-api.js.map
+
+/***/ }),
+
+/***/ "./node_modules/eosjs/dist/eosjs-jsonrpc.js":
+/*!**************************************************!*\
+  !*** ./node_modules/eosjs/dist/eosjs-jsonrpc.js ***!
+  \**************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+/**
+ * @module JSON-RPC
+ */
+// copyright defined in eosjs/LICENSE.txt
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var __values = (this && this.__values) || function(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.JsonRpc = void 0;
+var eosjs_numeric_1 = __webpack_require__(/*! ./eosjs-numeric */ "./node_modules/eosjs/dist/eosjs-numeric.js");
+var eosjs_rpcerror_1 = __webpack_require__(/*! ./eosjs-rpcerror */ "./node_modules/eosjs/dist/eosjs-rpcerror.js");
+var arrayToHex = function (data) {
+    var e_1, _a;
+    var result = '';
+    try {
+        for (var data_1 = __values(data), data_1_1 = data_1.next(); !data_1_1.done; data_1_1 = data_1.next()) {
+            var x = data_1_1.value;
+            result += ('00' + x.toString(16)).slice(-2);
+        }
+    }
+    catch (e_1_1) { e_1 = { error: e_1_1 }; }
+    finally {
+        try {
+            if (data_1_1 && !data_1_1.done && (_a = data_1.return)) _a.call(data_1);
+        }
+        finally { if (e_1) throw e_1.error; }
+    }
+    return result;
+};
+/** Make RPC calls */
+var JsonRpc = /** @class */ (function () {
+    /**
+     * @param args
+     * `fetch`:
+     * browsers: leave `null` or `undefined`
+     * node: provide an implementation
+     */
+    function JsonRpc(endpoint, args) {
+        if (args === void 0) { args = {}; }
+        this.endpoint = endpoint.replace(/\/$/, '');
+        if (args.fetch) {
+            this.fetchBuiltin = args.fetch;
+        }
+        else {
+            this.fetchBuiltin = __webpack_require__.g.fetch;
+        }
+    }
+    /** Post `body` to `endpoint + path`. Throws detailed error information in `RpcError` when available. */
+    JsonRpc.prototype.fetch = function (path, body) {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, json, f, e_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        f = this.fetchBuiltin;
+                        return [4 /*yield*/, f(this.endpoint + path, {
+                                body: JSON.stringify(body),
+                                method: 'POST',
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        return [4 /*yield*/, response.json()];
+                    case 2:
+                        json = _a.sent();
+                        if (json.processed && json.processed.except) {
+                            throw new eosjs_rpcerror_1.RpcError(json);
+                        }
+                        return [3 /*break*/, 4];
+                    case 3:
+                        e_2 = _a.sent();
+                        e_2.isFetchError = true;
+                        throw e_2;
+                    case 4:
+                        if (!response.ok) {
+                            throw new eosjs_rpcerror_1.RpcError(json);
+                        }
+                        return [2 /*return*/, json];
+                }
+            });
+        });
+    };
+    /** Raw call to `/v1/chain/get_abi` */
+    JsonRpc.prototype.get_abi = function (accountName) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.fetch('/v1/chain/get_abi', { account_name: accountName })];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    /** Raw call to `/v1/chain/get_account` */
+    JsonRpc.prototype.get_account = function (accountName) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.fetch('/v1/chain/get_account', { account_name: accountName })];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    /** Raw call to `/v1/chain/get_block_header_state` */
+    JsonRpc.prototype.get_block_header_state = function (blockNumOrId) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.fetch('/v1/chain/get_block_header_state', { block_num_or_id: blockNumOrId })];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    /** Raw call to `/v1/chain/get_block` */
+    JsonRpc.prototype.get_block = function (blockNumOrId) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.fetch('/v1/chain/get_block', { block_num_or_id: blockNumOrId })];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    /** Raw call to `/v1/chain/get_code` */
+    JsonRpc.prototype.get_code = function (accountName) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.fetch('/v1/chain/get_code', {
+                            account_name: accountName,
+                            code_as_wasm: true
+                        })];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    /** Raw call to `/v1/chain/get_currency_balance` */
+    JsonRpc.prototype.get_currency_balance = function (code, account, symbol) {
+        if (symbol === void 0) { symbol = null; }
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.fetch('/v1/chain/get_currency_balance', { code: code, account: account, symbol: symbol })];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    /** Raw call to `/v1/chain/get_currency_stats` */
+    JsonRpc.prototype.get_currency_stats = function (code, symbol) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.fetch('/v1/chain/get_currency_stats', { code: code, symbol: symbol })];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    /** Raw call to `/v1/chain/get_info` */
+    JsonRpc.prototype.get_info = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.fetch('/v1/chain/get_info', {})];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    /** Raw call to `/v1/chain/get_producer_schedule` */
+    JsonRpc.prototype.get_producer_schedule = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.fetch('/v1/chain/get_producer_schedule', {})];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    /** Raw call to `/v1/chain/get_producers` */
+    JsonRpc.prototype.get_producers = function (json, lowerBound, limit) {
+        if (json === void 0) { json = true; }
+        if (lowerBound === void 0) { lowerBound = ''; }
+        if (limit === void 0) { limit = 50; }
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.fetch('/v1/chain/get_producers', { json: json, lower_bound: lowerBound, limit: limit })];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    /** Raw call to `/v1/chain/get_raw_code_and_abi` */
+    JsonRpc.prototype.get_raw_code_and_abi = function (accountName) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.fetch('/v1/chain/get_raw_code_and_abi', { account_name: accountName })];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    /** calls `/v1/chain/get_raw_code_and_abi` and pulls out unneeded raw wasm code */
+    // TODO: use `/v1/chain/get_raw_abi` directly when it becomes available
+    JsonRpc.prototype.getRawAbi = function (accountName) {
+        return __awaiter(this, void 0, void 0, function () {
+            var rawCodeAndAbi, abi;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.get_raw_code_and_abi(accountName)];
+                    case 1:
+                        rawCodeAndAbi = _a.sent();
+                        abi = eosjs_numeric_1.base64ToBinary(rawCodeAndAbi.abi);
+                        return [2 /*return*/, { accountName: rawCodeAndAbi.account_name, abi: abi }];
+                }
+            });
+        });
+    };
+    /** Raw call to `/v1/chain/get_scheduled_transactions` */
+    JsonRpc.prototype.get_scheduled_transactions = function (json, lowerBound, limit) {
+        if (json === void 0) { json = true; }
+        if (lowerBound === void 0) { lowerBound = ''; }
+        if (limit === void 0) { limit = 50; }
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.fetch('/v1/chain/get_scheduled_transactions', { json: json, lower_bound: lowerBound, limit: limit })];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    /** Raw call to `/v1/chain/get_table_rows` */
+    JsonRpc.prototype.get_table_rows = function (_a) {
+        var _b = _a.json, json = _b === void 0 ? true : _b, code = _a.code, scope = _a.scope, table = _a.table, _c = _a.lower_bound, lower_bound = _c === void 0 ? '' : _c, _d = _a.upper_bound, upper_bound = _d === void 0 ? '' : _d, _e = _a.index_position, index_position = _e === void 0 ? 1 : _e, _f = _a.key_type, key_type = _f === void 0 ? '' : _f, _g = _a.limit, limit = _g === void 0 ? 10 : _g, _h = _a.reverse, reverse = _h === void 0 ? false : _h, _j = _a.show_payer, show_payer = _j === void 0 ? false : _j;
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_k) {
+                switch (_k.label) {
+                    case 0: return [4 /*yield*/, this.fetch('/v1/chain/get_table_rows', {
+                            json: json,
+                            code: code,
+                            scope: scope,
+                            table: table,
+                            lower_bound: lower_bound,
+                            upper_bound: upper_bound,
+                            index_position: index_position,
+                            key_type: key_type,
+                            limit: limit,
+                            reverse: reverse,
+                            show_payer: show_payer,
+                        })];
+                    case 1: return [2 /*return*/, _k.sent()];
+                }
+            });
+        });
+    };
+    /** Raw call to `/v1/chain/get_table_by_scope` */
+    JsonRpc.prototype.get_table_by_scope = function (_a) {
+        var code = _a.code, table = _a.table, _b = _a.lower_bound, lower_bound = _b === void 0 ? '' : _b, _c = _a.upper_bound, upper_bound = _c === void 0 ? '' : _c, _d = _a.limit, limit = _d === void 0 ? 10 : _d;
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_e) {
+                switch (_e.label) {
+                    case 0: return [4 /*yield*/, this.fetch('/v1/chain/get_table_by_scope', {
+                            code: code,
+                            table: table,
+                            lower_bound: lower_bound,
+                            upper_bound: upper_bound,
+                            limit: limit,
+                        })];
+                    case 1: return [2 /*return*/, _e.sent()];
+                }
+            });
+        });
+    };
+    /** Get subset of `availableKeys` needed to meet authorities in `transaction`. Implements `AuthorityProvider` */
+    JsonRpc.prototype.getRequiredKeys = function (args) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _a = eosjs_numeric_1.convertLegacyPublicKeys;
+                        return [4 /*yield*/, this.fetch('/v1/chain/get_required_keys', {
+                                transaction: args.transaction,
+                                available_keys: args.availableKeys,
+                            })];
+                    case 1: return [2 /*return*/, _a.apply(void 0, [(_b.sent()).required_keys])];
+                }
+            });
+        });
+    };
+    /** Push a serialized transaction (replaced by send_transaction, but returned format has changed) */
+    JsonRpc.prototype.push_transaction = function (_a) {
+        var signatures = _a.signatures, _b = _a.compression, compression = _b === void 0 ? 0 : _b, serializedTransaction = _a.serializedTransaction, serializedContextFreeData = _a.serializedContextFreeData;
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0: return [4 /*yield*/, this.fetch('/v1/chain/push_transaction', {
+                            signatures: signatures,
+                            compression: compression,
+                            packed_context_free_data: arrayToHex(serializedContextFreeData || new Uint8Array(0)),
+                            packed_trx: arrayToHex(serializedTransaction),
+                        })];
+                    case 1: return [2 /*return*/, _c.sent()];
+                }
+            });
+        });
+    };
+    /** Send a serialized transaction */
+    JsonRpc.prototype.send_transaction = function (_a) {
+        var signatures = _a.signatures, _b = _a.compression, compression = _b === void 0 ? 0 : _b, serializedTransaction = _a.serializedTransaction, serializedContextFreeData = _a.serializedContextFreeData;
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0: return [4 /*yield*/, this.fetch('/v1/chain/send_transaction', {
+                            signatures: signatures,
+                            compression: compression,
+                            packed_context_free_data: arrayToHex(serializedContextFreeData || new Uint8Array(0)),
+                            packed_trx: arrayToHex(serializedTransaction),
+                        })];
+                    case 1: return [2 /*return*/, _c.sent()];
+                }
+            });
+        });
+    };
+    /** Raw call to `/v1/db_size/get` */
+    JsonRpc.prototype.db_size_get = function () {
+        return __awaiter(this, void 0, void 0, function () { return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, this.fetch('/v1/db_size/get', {})];
+                case 1: return [2 /*return*/, _a.sent()];
+            }
+        }); });
+    };
+    /** Raw call to `/v1/history/get_actions` */
+    JsonRpc.prototype.history_get_actions = function (accountName, pos, offset) {
+        if (pos === void 0) { pos = null; }
+        if (offset === void 0) { offset = null; }
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.fetch('/v1/history/get_actions', { account_name: accountName, pos: pos, offset: offset })];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    /** Raw call to `/v1/history/get_transaction` */
+    JsonRpc.prototype.history_get_transaction = function (id, blockNumHint) {
+        if (blockNumHint === void 0) { blockNumHint = null; }
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.fetch('/v1/history/get_transaction', { id: id, block_num_hint: blockNumHint })];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    /** Raw call to `/v1/history/get_key_accounts` */
+    JsonRpc.prototype.history_get_key_accounts = function (publicKey) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.fetch('/v1/history/get_key_accounts', { public_key: publicKey })];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    /** Raw call to `/v1/history/get_controlled_accounts` */
+    JsonRpc.prototype.history_get_controlled_accounts = function (controllingAccount) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.fetch('/v1/history/get_controlled_accounts', { controlling_account: controllingAccount })];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    return JsonRpc;
+}()); // JsonRpc
+exports.JsonRpc = JsonRpc;
+//# sourceMappingURL=eosjs-jsonrpc.js.map
+
+/***/ }),
+
+/***/ "./node_modules/eosjs/dist/eosjs-numeric.js":
+/*!**************************************************!*\
+  !*** ./node_modules/eosjs/dist/eosjs-numeric.js ***!
+  \**************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
+var __spreadArray = (this && this.__spreadArray) || function (to, from) {
+    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+        to[j] = from[i];
+    return to;
+};
+var __values = (this && this.__values) || function(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.signatureToString = exports.stringToSignature = exports.privateKeyToString = exports.privateKeyToLegacyString = exports.stringToPrivateKey = exports.convertLegacyPublicKeys = exports.convertLegacyPublicKey = exports.publicKeyToString = exports.publicKeyToLegacyString = exports.stringToPublicKey = exports.signatureDataSize = exports.privateKeyDataSize = exports.publicKeyDataSize = exports.KeyType = exports.base64ToBinary = exports.binaryToBase58 = exports.base58ToBinary = exports.signedBinaryToDecimal = exports.binaryToDecimal = exports.signedDecimalToBinary = exports.decimalToBinary = exports.negate = exports.isNegative = void 0;
+/**
+ * @module Numeric
+ */
+var hash_js_1 = __webpack_require__(/*! hash.js */ "./node_modules/hash.js/lib/hash.js");
+// copyright defined in eosjs/LICENSE.txt
+var ripemd160 = __webpack_require__(/*! ./ripemd */ "./node_modules/eosjs/dist/ripemd.js").RIPEMD160.hash;
+var base58Chars = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+var base64Chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+var create_base58_map = function () {
+    var base58M = Array(256).fill(-1);
+    for (var i = 0; i < base58Chars.length; ++i) {
+        base58M[base58Chars.charCodeAt(i)] = i;
+    }
+    return base58M;
+};
+var base58Map = create_base58_map();
+var create_base64_map = function () {
+    var base64M = Array(256).fill(-1);
+    for (var i = 0; i < base64Chars.length; ++i) {
+        base64M[base64Chars.charCodeAt(i)] = i;
+    }
+    base64M['='.charCodeAt(0)] = 0;
+    return base64M;
+};
+var base64Map = create_base64_map();
+/** Is `bignum` a negative number? */
+var isNegative = function (bignum) {
+    return (bignum[bignum.length - 1] & 0x80) !== 0;
+};
+exports.isNegative = isNegative;
+/** Negate `bignum` */
+var negate = function (bignum) {
+    var carry = 1;
+    for (var i = 0; i < bignum.length; ++i) {
+        var x = (~bignum[i] & 0xff) + carry;
+        bignum[i] = x;
+        carry = x >> 8;
+    }
+};
+exports.negate = negate;
+/**
+ * Convert an unsigned decimal number in `s` to a bignum
+ *
+ * @param size bignum size (bytes)
+ */
+var decimalToBinary = function (size, s) {
+    var result = new Uint8Array(size);
+    for (var i = 0; i < s.length; ++i) {
+        var srcDigit = s.charCodeAt(i);
+        if (srcDigit < '0'.charCodeAt(0) || srcDigit > '9'.charCodeAt(0)) {
+            throw new Error('invalid number');
+        }
+        var carry = srcDigit - '0'.charCodeAt(0);
+        for (var j = 0; j < size; ++j) {
+            var x = result[j] * 10 + carry;
+            result[j] = x;
+            carry = x >> 8;
+        }
+        if (carry) {
+            throw new Error('number is out of range');
+        }
+    }
+    return result;
+};
+exports.decimalToBinary = decimalToBinary;
+/**
+ * Convert a signed decimal number in `s` to a bignum
+ *
+ * @param size bignum size (bytes)
+ */
+var signedDecimalToBinary = function (size, s) {
+    var negative = s[0] === '-';
+    if (negative) {
+        s = s.substr(1);
+    }
+    var result = exports.decimalToBinary(size, s);
+    if (negative) {
+        exports.negate(result);
+        if (!exports.isNegative(result)) {
+            throw new Error('number is out of range');
+        }
+    }
+    else if (exports.isNegative(result)) {
+        throw new Error('number is out of range');
+    }
+    return result;
+};
+exports.signedDecimalToBinary = signedDecimalToBinary;
+/**
+ * Convert `bignum` to an unsigned decimal number
+ *
+ * @param minDigits 0-pad result to this many digits
+ */
+var binaryToDecimal = function (bignum, minDigits) {
+    if (minDigits === void 0) { minDigits = 1; }
+    var result = Array(minDigits).fill('0'.charCodeAt(0));
+    for (var i = bignum.length - 1; i >= 0; --i) {
+        var carry = bignum[i];
+        for (var j = 0; j < result.length; ++j) {
+            var x = ((result[j] - '0'.charCodeAt(0)) << 8) + carry;
+            result[j] = '0'.charCodeAt(0) + x % 10;
+            carry = (x / 10) | 0;
+        }
+        while (carry) {
+            result.push('0'.charCodeAt(0) + carry % 10);
+            carry = (carry / 10) | 0;
+        }
+    }
+    result.reverse();
+    return String.fromCharCode.apply(String, __spreadArray([], __read(result)));
+};
+exports.binaryToDecimal = binaryToDecimal;
+/**
+ * Convert `bignum` to a signed decimal number
+ *
+ * @param minDigits 0-pad result to this many digits
+ */
+var signedBinaryToDecimal = function (bignum, minDigits) {
+    if (minDigits === void 0) { minDigits = 1; }
+    if (exports.isNegative(bignum)) {
+        var x = bignum.slice();
+        exports.negate(x);
+        return '-' + exports.binaryToDecimal(x, minDigits);
+    }
+    return exports.binaryToDecimal(bignum, minDigits);
+};
+exports.signedBinaryToDecimal = signedBinaryToDecimal;
+var base58ToBinaryVarSize = function (s) {
+    var e_1, _a;
+    var result = [];
+    for (var i = 0; i < s.length; ++i) {
+        var carry = base58Map[s.charCodeAt(i)];
+        if (carry < 0) {
+            throw new Error('invalid base-58 value');
+        }
+        for (var j = 0; j < result.length; ++j) {
+            var x = result[j] * 58 + carry;
+            result[j] = x & 0xff;
+            carry = x >> 8;
+        }
+        if (carry) {
+            result.push(carry);
+        }
+    }
+    try {
+        for (var s_1 = __values(s), s_1_1 = s_1.next(); !s_1_1.done; s_1_1 = s_1.next()) {
+            var ch = s_1_1.value;
+            if (ch === '1') {
+                result.push(0);
+            }
+            else {
+                break;
+            }
+        }
+    }
+    catch (e_1_1) { e_1 = { error: e_1_1 }; }
+    finally {
+        try {
+            if (s_1_1 && !s_1_1.done && (_a = s_1.return)) _a.call(s_1);
+        }
+        finally { if (e_1) throw e_1.error; }
+    }
+    result.reverse();
+    return new Uint8Array(result);
+};
+/**
+ * Convert an unsigned base-58 number in `s` to a bignum
+ *
+ * @param size bignum size (bytes)
+ */
+var base58ToBinary = function (size, s) {
+    if (!size) {
+        return base58ToBinaryVarSize(s);
+    }
+    var result = new Uint8Array(size);
+    for (var i = 0; i < s.length; ++i) {
+        var carry = base58Map[s.charCodeAt(i)];
+        if (carry < 0) {
+            throw new Error('invalid base-58 value');
+        }
+        for (var j = 0; j < size; ++j) {
+            var x = result[j] * 58 + carry;
+            result[j] = x;
+            carry = x >> 8;
+        }
+        if (carry) {
+            throw new Error('base-58 value is out of range');
+        }
+    }
+    result.reverse();
+    return result;
+};
+exports.base58ToBinary = base58ToBinary;
+/**
+ * Convert `bignum` to a base-58 number
+ *
+ * @param minDigits 0-pad result to this many digits
+ */
+var binaryToBase58 = function (bignum, minDigits) {
+    var e_2, _a, e_3, _b;
+    if (minDigits === void 0) { minDigits = 1; }
+    var result = [];
+    try {
+        for (var bignum_1 = __values(bignum), bignum_1_1 = bignum_1.next(); !bignum_1_1.done; bignum_1_1 = bignum_1.next()) {
+            var byte = bignum_1_1.value;
+            var carry = byte;
+            for (var j = 0; j < result.length; ++j) {
+                var x = (base58Map[result[j]] << 8) + carry;
+                result[j] = base58Chars.charCodeAt(x % 58);
+                carry = (x / 58) | 0;
+            }
+            while (carry) {
+                result.push(base58Chars.charCodeAt(carry % 58));
+                carry = (carry / 58) | 0;
+            }
+        }
+    }
+    catch (e_2_1) { e_2 = { error: e_2_1 }; }
+    finally {
+        try {
+            if (bignum_1_1 && !bignum_1_1.done && (_a = bignum_1.return)) _a.call(bignum_1);
+        }
+        finally { if (e_2) throw e_2.error; }
+    }
+    try {
+        for (var bignum_2 = __values(bignum), bignum_2_1 = bignum_2.next(); !bignum_2_1.done; bignum_2_1 = bignum_2.next()) {
+            var byte = bignum_2_1.value;
+            if (byte) {
+                break;
+            }
+            else {
+                result.push('1'.charCodeAt(0));
+            }
+        }
+    }
+    catch (e_3_1) { e_3 = { error: e_3_1 }; }
+    finally {
+        try {
+            if (bignum_2_1 && !bignum_2_1.done && (_b = bignum_2.return)) _b.call(bignum_2);
+        }
+        finally { if (e_3) throw e_3.error; }
+    }
+    result.reverse();
+    return String.fromCharCode.apply(String, __spreadArray([], __read(result)));
+};
+exports.binaryToBase58 = binaryToBase58;
+/** Convert an unsigned base-64 number in `s` to a bignum */
+var base64ToBinary = function (s) {
+    var len = s.length;
+    if ((len & 3) === 1 && s[len - 1] === '=') {
+        len -= 1;
+    } // fc appends an extra '='
+    if ((len & 3) !== 0) {
+        throw new Error('base-64 value is not padded correctly');
+    }
+    var groups = len >> 2;
+    var bytes = groups * 3;
+    if (len > 0 && s[len - 1] === '=') {
+        if (s[len - 2] === '=') {
+            bytes -= 2;
+        }
+        else {
+            bytes -= 1;
+        }
+    }
+    var result = new Uint8Array(bytes);
+    for (var group = 0; group < groups; ++group) {
+        var digit0 = base64Map[s.charCodeAt(group * 4 + 0)];
+        var digit1 = base64Map[s.charCodeAt(group * 4 + 1)];
+        var digit2 = base64Map[s.charCodeAt(group * 4 + 2)];
+        var digit3 = base64Map[s.charCodeAt(group * 4 + 3)];
+        result[group * 3 + 0] = (digit0 << 2) | (digit1 >> 4);
+        if (group * 3 + 1 < bytes) {
+            result[group * 3 + 1] = ((digit1 & 15) << 4) | (digit2 >> 2);
+        }
+        if (group * 3 + 2 < bytes) {
+            result[group * 3 + 2] = ((digit2 & 3) << 6) | digit3;
+        }
+    }
+    return result;
+};
+exports.base64ToBinary = base64ToBinary;
+/** Key types this library supports */
+var KeyType;
+(function (KeyType) {
+    KeyType[KeyType["k1"] = 0] = "k1";
+    KeyType[KeyType["r1"] = 1] = "r1";
+    KeyType[KeyType["wa"] = 2] = "wa";
+})(KeyType = exports.KeyType || (exports.KeyType = {}));
+/** Public key data size, excluding type field */
+exports.publicKeyDataSize = 33;
+/** Private key data size, excluding type field */
+exports.privateKeyDataSize = 32;
+/** Signature data size, excluding type field */
+exports.signatureDataSize = 65;
+var digestSuffixRipemd160 = function (data, suffix) {
+    var d = new Uint8Array(data.length + suffix.length);
+    for (var i = 0; i < data.length; ++i) {
+        d[i] = data[i];
+    }
+    for (var i = 0; i < suffix.length; ++i) {
+        d[data.length + i] = suffix.charCodeAt(i);
+    }
+    return ripemd160(d);
+};
+var stringToKey = function (s, type, size, suffix) {
+    var whole = exports.base58ToBinary(size ? size + 4 : 0, s);
+    var result = { type: type, data: new Uint8Array(whole.buffer, 0, whole.length - 4) };
+    var digest = new Uint8Array(digestSuffixRipemd160(result.data, suffix));
+    if (digest[0] !== whole[whole.length - 4] || digest[1] !== whole[whole.length - 3]
+        || digest[2] !== whole[whole.length - 2] || digest[3] !== whole[whole.length - 1]) {
+        throw new Error('checksum doesn\'t match');
+    }
+    return result;
+};
+var keyToString = function (key, suffix, prefix) {
+    var digest = new Uint8Array(digestSuffixRipemd160(key.data, suffix));
+    var whole = new Uint8Array(key.data.length + 4);
+    for (var i = 0; i < key.data.length; ++i) {
+        whole[i] = key.data[i];
+    }
+    for (var i = 0; i < 4; ++i) {
+        whole[i + key.data.length] = digest[i];
+    }
+    return prefix + exports.binaryToBase58(whole);
+};
+/** Convert key in `s` to binary form */
+var stringToPublicKey = function (s) {
+    if (typeof s !== 'string') {
+        throw new Error('expected string containing public key');
+    }
+    if (s.substr(0, 3) === 'EOS') {
+        var whole = exports.base58ToBinary(exports.publicKeyDataSize + 4, s.substr(3));
+        var key = { type: KeyType.k1, data: new Uint8Array(exports.publicKeyDataSize) };
+        for (var i = 0; i < exports.publicKeyDataSize; ++i) {
+            key.data[i] = whole[i];
+        }
+        var digest = new Uint8Array(ripemd160(key.data));
+        if (digest[0] !== whole[exports.publicKeyDataSize] || digest[1] !== whole[34]
+            || digest[2] !== whole[35] || digest[3] !== whole[36]) {
+            throw new Error('checksum doesn\'t match');
+        }
+        return key;
+    }
+    else if (s.substr(0, 7) === 'PUB_K1_') {
+        return stringToKey(s.substr(7), KeyType.k1, exports.publicKeyDataSize, 'K1');
+    }
+    else if (s.substr(0, 7) === 'PUB_R1_') {
+        return stringToKey(s.substr(7), KeyType.r1, exports.publicKeyDataSize, 'R1');
+    }
+    else if (s.substr(0, 7) === 'PUB_WA_') {
+        return stringToKey(s.substr(7), KeyType.wa, 0, 'WA');
+    }
+    else {
+        throw new Error('unrecognized public key format');
+    }
+};
+exports.stringToPublicKey = stringToPublicKey;
+/** Convert public `key` to legacy string (base-58) form */
+var publicKeyToLegacyString = function (key) {
+    if (key.type === KeyType.k1 && key.data.length === exports.publicKeyDataSize) {
+        return keyToString(key, '', 'EOS');
+    }
+    else if (key.type === KeyType.r1 || key.type === KeyType.wa) {
+        throw new Error('Key format not supported in legacy conversion');
+    }
+    else {
+        throw new Error('unrecognized public key format');
+    }
+};
+exports.publicKeyToLegacyString = publicKeyToLegacyString;
+/** Convert `key` to string (base-58) form */
+var publicKeyToString = function (key) {
+    if (key.type === KeyType.k1 && key.data.length === exports.publicKeyDataSize) {
+        return keyToString(key, 'K1', 'PUB_K1_');
+    }
+    else if (key.type === KeyType.r1 && key.data.length === exports.publicKeyDataSize) {
+        return keyToString(key, 'R1', 'PUB_R1_');
+    }
+    else if (key.type === KeyType.wa) {
+        return keyToString(key, 'WA', 'PUB_WA_');
+    }
+    else {
+        throw new Error('unrecognized public key format');
+    }
+};
+exports.publicKeyToString = publicKeyToString;
+/** If a key is in the legacy format (`EOS` prefix), then convert it to the new format (`PUB_K1_`).
+ * Leaves other formats untouched
+ */
+var convertLegacyPublicKey = function (s) {
+    if (s.substr(0, 3) === 'EOS') {
+        return exports.publicKeyToString(exports.stringToPublicKey(s));
+    }
+    return s;
+};
+exports.convertLegacyPublicKey = convertLegacyPublicKey;
+/** If a key is in the legacy format (`EOS` prefix), then convert it to the new format (`PUB_K1_`).
+ * Leaves other formats untouched
+ */
+var convertLegacyPublicKeys = function (keys) {
+    return keys.map(exports.convertLegacyPublicKey);
+};
+exports.convertLegacyPublicKeys = convertLegacyPublicKeys;
+/** Convert key in `s` to binary form */
+var stringToPrivateKey = function (s) {
+    if (typeof s !== 'string') {
+        throw new Error('expected string containing private key');
+    }
+    if (s.substr(0, 7) === 'PVT_R1_') {
+        return stringToKey(s.substr(7), KeyType.r1, exports.privateKeyDataSize, 'R1');
+    }
+    else if (s.substr(0, 7) === 'PVT_K1_') {
+        return stringToKey(s.substr(7), KeyType.k1, exports.privateKeyDataSize, 'K1');
+    }
+    else {
+        // todo: Verify checksum: sha256(sha256(key.data)).
+        //       Not critical since a bad key will fail to produce a
+        //       valid signature anyway.
+        var whole = exports.base58ToBinary(exports.privateKeyDataSize + 5, s);
+        var key = { type: KeyType.k1, data: new Uint8Array(exports.privateKeyDataSize) };
+        if (whole[0] !== 0x80) {
+            throw new Error('unrecognized private key type');
+        }
+        for (var i = 0; i < exports.privateKeyDataSize; ++i) {
+            key.data[i] = whole[i + 1];
+        }
+        return key;
+    }
+};
+exports.stringToPrivateKey = stringToPrivateKey;
+/** Convert private `key` to legacy string (base-58) form */
+var privateKeyToLegacyString = function (key) {
+    if (key.type === KeyType.k1 && key.data.length === exports.privateKeyDataSize) {
+        var whole_1 = [];
+        whole_1.push(128);
+        key.data.forEach(function (byte) { return whole_1.push(byte); });
+        var digest = new Uint8Array(hash_js_1.sha256().update(hash_js_1.sha256().update(whole_1).digest()).digest());
+        var result = new Uint8Array(exports.privateKeyDataSize + 5);
+        for (var i = 0; i < whole_1.length; i++) {
+            result[i] = whole_1[i];
+        }
+        for (var i = 0; i < 4; i++) {
+            result[i + whole_1.length] = digest[i];
+        }
+        return exports.binaryToBase58(result);
+    }
+    else if (key.type === KeyType.r1 || key.type === KeyType.wa) {
+        throw new Error('Key format not supported in legacy conversion');
+    }
+    else {
+        throw new Error('unrecognized public key format');
+    }
+};
+exports.privateKeyToLegacyString = privateKeyToLegacyString;
+/** Convert `key` to string (base-58) form */
+var privateKeyToString = function (key) {
+    if (key.type === KeyType.r1) {
+        return keyToString(key, 'R1', 'PVT_R1_');
+    }
+    else if (key.type === KeyType.k1) {
+        return keyToString(key, 'K1', 'PVT_K1_');
+    }
+    else {
+        throw new Error('unrecognized private key format');
+    }
+};
+exports.privateKeyToString = privateKeyToString;
+/** Convert key in `s` to binary form */
+var stringToSignature = function (s) {
+    if (typeof s !== 'string') {
+        throw new Error('expected string containing signature');
+    }
+    if (s.substr(0, 7) === 'SIG_K1_') {
+        return stringToKey(s.substr(7), KeyType.k1, exports.signatureDataSize, 'K1');
+    }
+    else if (s.substr(0, 7) === 'SIG_R1_') {
+        return stringToKey(s.substr(7), KeyType.r1, exports.signatureDataSize, 'R1');
+    }
+    else if (s.substr(0, 7) === 'SIG_WA_') {
+        return stringToKey(s.substr(7), KeyType.wa, 0, 'WA');
+    }
+    else {
+        throw new Error('unrecognized signature format');
+    }
+};
+exports.stringToSignature = stringToSignature;
+/** Convert `signature` to string (base-58) form */
+var signatureToString = function (signature) {
+    if (signature.type === KeyType.k1) {
+        return keyToString(signature, 'K1', 'SIG_K1_');
+    }
+    else if (signature.type === KeyType.r1) {
+        return keyToString(signature, 'R1', 'SIG_R1_');
+    }
+    else if (signature.type === KeyType.wa) {
+        return keyToString(signature, 'WA', 'SIG_WA_');
+    }
+    else {
+        throw new Error('unrecognized signature format');
+    }
+};
+exports.signatureToString = signatureToString;
+//# sourceMappingURL=eosjs-numeric.js.map
+
+/***/ }),
+
+/***/ "./node_modules/eosjs/dist/eosjs-rpc-interfaces.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/eosjs/dist/eosjs-rpc-interfaces.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+/**
+ * @module RPC-API-Methods
+ * copyright defined in eosjs/LICENSE.txt
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+//# sourceMappingURL=eosjs-rpc-interfaces.js.map
+
+/***/ }),
+
+/***/ "./node_modules/eosjs/dist/eosjs-rpcerror.js":
+/*!***************************************************!*\
+  !*** ./node_modules/eosjs/dist/eosjs-rpcerror.js ***!
+  \***************************************************/
+/***/ (function(__unused_webpack_module, exports) {
+
+"use strict";
+
+/**
+ * @module RPC-Error
+ */
+// copyright defined in eosjs/LICENSE.txt
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.RpcError = void 0;
+/** Holds detailed error information */
+var RpcError = /** @class */ (function (_super) {
+    __extends(RpcError, _super);
+    function RpcError(json) {
+        var _this = this;
+        if (json.error && json.error.details && json.error.details.length && json.error.details[0].message) {
+            _this = _super.call(this, json.error.details[0].message) || this;
+        }
+        else if (json.processed && json.processed.except && json.processed.except.message) {
+            _this = _super.call(this, json.processed.except.message) || this;
+        }
+        else {
+            _this = _super.call(this, json.message) || this;
+        }
+        Object.setPrototypeOf(_this, RpcError.prototype);
+        _this.json = json;
+        return _this;
+    }
+    return RpcError;
+}(Error));
+exports.RpcError = RpcError;
+//# sourceMappingURL=eosjs-rpcerror.js.map
+
+/***/ }),
+
+/***/ "./node_modules/eosjs/dist/eosjs-serialize.js":
+/*!****************************************************!*\
+  !*** ./node_modules/eosjs/dist/eosjs-serialize.js ***!
+  \****************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+/**
+ * @module Serialize
+ */
+// copyright defined in eosjs/LICENSE.txt
+/* eslint-disable max-classes-per-file */
+/* eslint-disable jsdoc/check-indentation */
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
+var __spreadArray = (this && this.__spreadArray) || function (to, from) {
+    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+        to[j] = from[i];
+    return to;
+};
+var __values = (this && this.__values) || function(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.deserializeAction = exports.deserializeActionData = exports.serializeAction = exports.serializeActionData = exports.transactionHeader = exports.getTypesFromAbi = exports.getType = exports.createInitialTypes = exports.hexToUint8Array = exports.arrayToHex = exports.symbolToString = exports.stringToSymbol = exports.blockTimestampToDate = exports.dateToBlockTimestamp = exports.timePointSecToDate = exports.dateToTimePointSec = exports.timePointToDate = exports.dateToTimePoint = exports.supportedAbiVersion = exports.SerialBuffer = exports.SerializerState = void 0;
+var numeric = __webpack_require__(/*! ./eosjs-numeric */ "./node_modules/eosjs/dist/eosjs-numeric.js");
+/** State for serialize() and deserialize() */
+var SerializerState = /** @class */ (function () {
+    function SerializerState(options) {
+        if (options === void 0) { options = {}; }
+        /** Have any binary extensions been skipped? */
+        this.skippedBinaryExtension = false;
+        this.options = options;
+    }
+    return SerializerState;
+}());
+exports.SerializerState = SerializerState;
+/** Serialize and deserialize data */
+var SerialBuffer = /** @class */ (function () {
+    /**
+     * @param __namedParameters
+     * `array`: `null` if serializing, or binary data to deserialize
+     * `textEncoder`: `TextEncoder` instance to use. Pass in `null` if running in a browser
+     * `textDecoder`: `TextDecider` instance to use. Pass in `null` if running in a browser
+     */
+    function SerialBuffer(_a) {
+        var _b = _a === void 0 ? {} : _a, textEncoder = _b.textEncoder, textDecoder = _b.textDecoder, array = _b.array;
+        /** Current position while reading (deserializing) */
+        this.readPos = 0;
+        this.array = array || new Uint8Array(1024);
+        this.length = array ? array.length : 0;
+        this.textEncoder = textEncoder || new TextEncoder();
+        this.textDecoder = textDecoder || new TextDecoder('utf-8', { fatal: true });
+    }
+    /** Resize `array` if needed to have at least `size` bytes free */
+    SerialBuffer.prototype.reserve = function (size) {
+        if (this.length + size <= this.array.length) {
+            return;
+        }
+        var l = this.array.length;
+        while (this.length + size > l) {
+            l = Math.ceil(l * 1.5);
+        }
+        var newArray = new Uint8Array(l);
+        newArray.set(this.array);
+        this.array = newArray;
+    };
+    /** Is there data available to read? */
+    SerialBuffer.prototype.haveReadData = function () {
+        return this.readPos < this.length;
+    };
+    /** Restart reading from the beginning */
+    SerialBuffer.prototype.restartRead = function () {
+        this.readPos = 0;
+    };
+    /** Return data with excess storage trimmed away */
+    SerialBuffer.prototype.asUint8Array = function () {
+        return new Uint8Array(this.array.buffer, this.array.byteOffset, this.length);
+    };
+    /** Append bytes */
+    SerialBuffer.prototype.pushArray = function (v) {
+        this.reserve(v.length);
+        this.array.set(v, this.length);
+        this.length += v.length;
+    };
+    /** Append bytes */
+    SerialBuffer.prototype.push = function () {
+        var v = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            v[_i] = arguments[_i];
+        }
+        this.pushArray(v);
+    };
+    /** Get a single byte */
+    SerialBuffer.prototype.get = function () {
+        if (this.readPos < this.length) {
+            return this.array[this.readPos++];
+        }
+        throw new Error('Read past end of buffer');
+    };
+    /** Append bytes in `v`. Throws if `len` doesn't match `v.length` */
+    SerialBuffer.prototype.pushUint8ArrayChecked = function (v, len) {
+        if (v.length !== len) {
+            throw new Error('Binary data has incorrect size');
+        }
+        this.pushArray(v);
+    };
+    /** Get `len` bytes */
+    SerialBuffer.prototype.getUint8Array = function (len) {
+        if (this.readPos + len > this.length) {
+            throw new Error('Read past end of buffer');
+        }
+        var result = new Uint8Array(this.array.buffer, this.array.byteOffset + this.readPos, len);
+        this.readPos += len;
+        return result;
+    };
+    /** Skip `len` bytes */
+    SerialBuffer.prototype.skip = function (len) {
+        if (this.readPos + len > this.length) {
+            throw new Error('Read past end of buffer');
+        }
+        this.readPos += len;
+    };
+    /** Append a `uint16` */
+    SerialBuffer.prototype.pushUint16 = function (v) {
+        this.push((v >> 0) & 0xff, (v >> 8) & 0xff);
+    };
+    /** Get a `uint16` */
+    SerialBuffer.prototype.getUint16 = function () {
+        var v = 0;
+        v |= this.get() << 0;
+        v |= this.get() << 8;
+        return v;
+    };
+    /** Append a `uint32` */
+    SerialBuffer.prototype.pushUint32 = function (v) {
+        this.push((v >> 0) & 0xff, (v >> 8) & 0xff, (v >> 16) & 0xff, (v >> 24) & 0xff);
+    };
+    /** Get a `uint32` */
+    SerialBuffer.prototype.getUint32 = function () {
+        var v = 0;
+        v |= this.get() << 0;
+        v |= this.get() << 8;
+        v |= this.get() << 16;
+        v |= this.get() << 24;
+        return v >>> 0;
+    };
+    /** Append a `uint64`. *Caution*: `number` only has 53 bits of precision */
+    SerialBuffer.prototype.pushNumberAsUint64 = function (v) {
+        this.pushUint32(v >>> 0);
+        this.pushUint32(Math.floor(v / 4294967296) >>> 0);
+    };
+    /**
+     * Get a `uint64` as a `number`. *Caution*: `number` only has 53 bits of precision; some values will change.
+     * `numeric.binaryToDecimal(serialBuffer.getUint8Array(8))` recommended instead
+     */
+    SerialBuffer.prototype.getUint64AsNumber = function () {
+        var low = this.getUint32();
+        var high = this.getUint32();
+        return (high >>> 0) * 4294967296 + (low >>> 0);
+    };
+    /** Append a `varuint32` */
+    SerialBuffer.prototype.pushVaruint32 = function (v) {
+        while (true) {
+            if (v >>> 7) {
+                this.push(0x80 | (v & 0x7f));
+                v = v >>> 7;
+            }
+            else {
+                this.push(v);
+                break;
+            }
+        }
+    };
+    /** Get a `varuint32` */
+    SerialBuffer.prototype.getVaruint32 = function () {
+        var v = 0;
+        var bit = 0;
+        while (true) {
+            var b = this.get();
+            v |= (b & 0x7f) << bit;
+            bit += 7;
+            if (!(b & 0x80)) {
+                break;
+            }
+        }
+        return v >>> 0;
+    };
+    /** Append a `varint32` */
+    SerialBuffer.prototype.pushVarint32 = function (v) {
+        this.pushVaruint32((v << 1) ^ (v >> 31));
+    };
+    /** Get a `varint32` */
+    SerialBuffer.prototype.getVarint32 = function () {
+        var v = this.getVaruint32();
+        if (v & 1) {
+            return ((~v) >> 1) | 2147483648;
+        }
+        else {
+            return v >>> 1;
+        }
+    };
+    /** Append a `float32` */
+    SerialBuffer.prototype.pushFloat32 = function (v) {
+        this.pushArray(new Uint8Array((new Float32Array([v])).buffer));
+    };
+    /** Get a `float32` */
+    SerialBuffer.prototype.getFloat32 = function () {
+        return new Float32Array(this.getUint8Array(4).slice().buffer)[0];
+    };
+    /** Append a `float64` */
+    SerialBuffer.prototype.pushFloat64 = function (v) {
+        this.pushArray(new Uint8Array((new Float64Array([v])).buffer));
+    };
+    /** Get a `float64` */
+    SerialBuffer.prototype.getFloat64 = function () {
+        return new Float64Array(this.getUint8Array(8).slice().buffer)[0];
+    };
+    /** Append a `name` */
+    SerialBuffer.prototype.pushName = function (s) {
+        if (typeof s !== 'string') {
+            throw new Error('Expected string containing name');
+        }
+        var regex = new RegExp(/^[.1-5a-z]{0,12}[.1-5a-j]?$/);
+        if (!regex.test(s)) {
+            throw new Error('Name should be less than 13 characters, or less than 14 if last character is between 1-5 or a-j, and only contain the following symbols .12345abcdefghijklmnopqrstuvwxyz'); // eslint-disable-line
+        }
+        var charToSymbol = function (c) {
+            if (c >= 'a'.charCodeAt(0) && c <= 'z'.charCodeAt(0)) {
+                return (c - 'a'.charCodeAt(0)) + 6;
+            }
+            if (c >= '1'.charCodeAt(0) && c <= '5'.charCodeAt(0)) {
+                return (c - '1'.charCodeAt(0)) + 1;
+            }
+            return 0;
+        };
+        var a = new Uint8Array(8);
+        var bit = 63;
+        for (var i = 0; i < s.length; ++i) {
+            var c = charToSymbol(s.charCodeAt(i));
+            if (bit < 5) {
+                c = c << 1;
+            }
+            for (var j = 4; j >= 0; --j) {
+                if (bit >= 0) {
+                    a[Math.floor(bit / 8)] |= ((c >> j) & 1) << (bit % 8);
+                    --bit;
+                }
+            }
+        }
+        this.pushArray(a);
+    };
+    /** Get a `name` */
+    SerialBuffer.prototype.getName = function () {
+        var a = this.getUint8Array(8);
+        var result = '';
+        for (var bit = 63; bit >= 0;) {
+            var c = 0;
+            for (var i = 0; i < 5; ++i) {
+                if (bit >= 0) {
+                    c = (c << 1) | ((a[Math.floor(bit / 8)] >> (bit % 8)) & 1);
+                    --bit;
+                }
+            }
+            if (c >= 6) {
+                result += String.fromCharCode(c + 'a'.charCodeAt(0) - 6);
+            }
+            else if (c >= 1) {
+                result += String.fromCharCode(c + '1'.charCodeAt(0) - 1);
+            }
+            else {
+                result += '.';
+            }
+        }
+        while (result.endsWith('.')) {
+            result = result.substr(0, result.length - 1);
+        }
+        return result;
+    };
+    /** Append length-prefixed binary data */
+    SerialBuffer.prototype.pushBytes = function (v) {
+        this.pushVaruint32(v.length);
+        this.pushArray(v);
+    };
+    /** Get length-prefixed binary data */
+    SerialBuffer.prototype.getBytes = function () {
+        return this.getUint8Array(this.getVaruint32());
+    };
+    /** Append a string */
+    SerialBuffer.prototype.pushString = function (v) {
+        this.pushBytes(this.textEncoder.encode(v));
+    };
+    /** Get a string */
+    SerialBuffer.prototype.getString = function () {
+        return this.textDecoder.decode(this.getBytes());
+    };
+    /** Append a `symbol_code`. Unlike `symbol`, `symbol_code` doesn't include a precision. */
+    SerialBuffer.prototype.pushSymbolCode = function (name) {
+        if (typeof name !== 'string') {
+            throw new Error('Expected string containing symbol_code');
+        }
+        var a = [];
+        a.push.apply(a, __spreadArray([], __read(this.textEncoder.encode(name))));
+        while (a.length < 8) {
+            a.push(0);
+        }
+        this.pushArray(a.slice(0, 8));
+    };
+    /** Get a `symbol_code`. Unlike `symbol`, `symbol_code` doesn't include a precision. */
+    SerialBuffer.prototype.getSymbolCode = function () {
+        var a = this.getUint8Array(8);
+        var len;
+        for (len = 0; len < a.length; ++len) {
+            if (!a[len]) {
+                break;
+            }
+        }
+        var name = this.textDecoder.decode(new Uint8Array(a.buffer, a.byteOffset, len));
+        return name;
+    };
+    /** Append a `symbol` */
+    SerialBuffer.prototype.pushSymbol = function (_a) {
+        var name = _a.name, precision = _a.precision;
+        if (!/^[A-Z]{1,7}$/.test(name)) {
+            throw new Error('Expected symbol to be A-Z and between one and seven characters');
+        }
+        var a = [precision & 0xff];
+        a.push.apply(a, __spreadArray([], __read(this.textEncoder.encode(name))));
+        while (a.length < 8) {
+            a.push(0);
+        }
+        this.pushArray(a.slice(0, 8));
+    };
+    /** Get a `symbol` */
+    SerialBuffer.prototype.getSymbol = function () {
+        var precision = this.get();
+        var a = this.getUint8Array(7);
+        var len;
+        for (len = 0; len < a.length; ++len) {
+            if (!a[len]) {
+                break;
+            }
+        }
+        var name = this.textDecoder.decode(new Uint8Array(a.buffer, a.byteOffset, len));
+        return { name: name, precision: precision };
+    };
+    /** Append an asset */
+    SerialBuffer.prototype.pushAsset = function (s) {
+        if (typeof s !== 'string') {
+            throw new Error('Expected string containing asset');
+        }
+        s = s.trim();
+        var pos = 0;
+        var amount = '';
+        var precision = 0;
+        if (s[pos] === '-') {
+            amount += '-';
+            ++pos;
+        }
+        var foundDigit = false;
+        while (pos < s.length && s.charCodeAt(pos) >= '0'.charCodeAt(0) && s.charCodeAt(pos) <= '9'.charCodeAt(0)) {
+            foundDigit = true;
+            amount += s[pos];
+            ++pos;
+        }
+        if (!foundDigit) {
+            throw new Error('Asset must begin with a number');
+        }
+        if (s[pos] === '.') {
+            ++pos;
+            while (pos < s.length && s.charCodeAt(pos) >= '0'.charCodeAt(0) && s.charCodeAt(pos) <= '9'.charCodeAt(0)) {
+                amount += s[pos];
+                ++precision;
+                ++pos;
+            }
+        }
+        var name = s.substr(pos).trim();
+        this.pushArray(numeric.signedDecimalToBinary(8, amount));
+        this.pushSymbol({ name: name, precision: precision });
+    };
+    /** Get an asset */
+    SerialBuffer.prototype.getAsset = function () {
+        var amount = this.getUint8Array(8);
+        var _a = this.getSymbol(), name = _a.name, precision = _a.precision;
+        var s = numeric.signedBinaryToDecimal(amount, precision + 1);
+        if (precision) {
+            s = s.substr(0, s.length - precision) + '.' + s.substr(s.length - precision);
+        }
+        return s + ' ' + name;
+    };
+    /** Append a public key */
+    SerialBuffer.prototype.pushPublicKey = function (s) {
+        var key = numeric.stringToPublicKey(s);
+        this.push(key.type);
+        this.pushArray(key.data);
+    };
+    /** Get a public key */
+    SerialBuffer.prototype.getPublicKey = function () {
+        var type = this.get();
+        var data;
+        if (type === numeric.KeyType.wa) {
+            var begin = this.readPos;
+            this.skip(34);
+            this.skip(this.getVaruint32());
+            data = new Uint8Array(this.array.buffer, this.array.byteOffset + begin, this.readPos - begin);
+        }
+        else {
+            data = this.getUint8Array(numeric.publicKeyDataSize);
+        }
+        return numeric.publicKeyToString({ type: type, data: data });
+    };
+    /** Append a private key */
+    SerialBuffer.prototype.pushPrivateKey = function (s) {
+        var key = numeric.stringToPrivateKey(s);
+        this.push(key.type);
+        this.pushArray(key.data);
+    };
+    /** Get a private key */
+    SerialBuffer.prototype.getPrivateKey = function () {
+        var type = this.get();
+        var data = this.getUint8Array(numeric.privateKeyDataSize);
+        return numeric.privateKeyToString({ type: type, data: data });
+    };
+    /** Append a signature */
+    SerialBuffer.prototype.pushSignature = function (s) {
+        var key = numeric.stringToSignature(s);
+        this.push(key.type);
+        this.pushArray(key.data);
+    };
+    /** Get a signature */
+    SerialBuffer.prototype.getSignature = function () {
+        var type = this.get();
+        var data;
+        if (type === numeric.KeyType.wa) {
+            var begin = this.readPos;
+            this.skip(65);
+            this.skip(this.getVaruint32());
+            this.skip(this.getVaruint32());
+            data = new Uint8Array(this.array.buffer, this.array.byteOffset + begin, this.readPos - begin);
+        }
+        else {
+            data = this.getUint8Array(numeric.signatureDataSize);
+        }
+        return numeric.signatureToString({ type: type, data: data });
+    };
+    return SerialBuffer;
+}()); // SerialBuffer
+exports.SerialBuffer = SerialBuffer;
+/** Is this a supported ABI version? */
+var supportedAbiVersion = function (version) {
+    return version.startsWith('eosio::abi/1.');
+};
+exports.supportedAbiVersion = supportedAbiVersion;
+var checkDateParse = function (date) {
+    var result = Date.parse(date);
+    if (Number.isNaN(result)) {
+        throw new Error('Invalid time format');
+    }
+    return result;
+};
+/** Convert date in ISO format to `time_point` (miliseconds since epoch) */
+var dateToTimePoint = function (date) {
+    return Math.round(checkDateParse(date + 'Z') * 1000);
+};
+exports.dateToTimePoint = dateToTimePoint;
+/** Convert `time_point` (miliseconds since epoch) to date in ISO format */
+var timePointToDate = function (us) {
+    var s = (new Date(us / 1000)).toISOString();
+    return s.substr(0, s.length - 1);
+};
+exports.timePointToDate = timePointToDate;
+/** Convert date in ISO format to `time_point_sec` (seconds since epoch) */
+var dateToTimePointSec = function (date) {
+    return Math.round(checkDateParse(date + 'Z') / 1000);
+};
+exports.dateToTimePointSec = dateToTimePointSec;
+/** Convert `time_point_sec` (seconds since epoch) to to date in ISO format */
+var timePointSecToDate = function (sec) {
+    var s = (new Date(sec * 1000)).toISOString();
+    return s.substr(0, s.length - 1);
+};
+exports.timePointSecToDate = timePointSecToDate;
+/** Convert date in ISO format to `block_timestamp_type` (half-seconds since a different epoch) */
+var dateToBlockTimestamp = function (date) {
+    return Math.round((checkDateParse(date + 'Z') - 946684800000) / 500);
+};
+exports.dateToBlockTimestamp = dateToBlockTimestamp;
+/** Convert `block_timestamp_type` (half-seconds since a different epoch) to to date in ISO format */
+var blockTimestampToDate = function (slot) {
+    var s = (new Date(slot * 500 + 946684800000)).toISOString();
+    return s.substr(0, s.length - 1);
+};
+exports.blockTimestampToDate = blockTimestampToDate;
+/** Convert `string` to `Symbol`. format: `precision,NAME`. */
+var stringToSymbol = function (s) {
+    if (typeof s !== 'string') {
+        throw new Error('Expected string containing symbol');
+    }
+    var m = s.match(/^([0-9]+),([A-Z]+)$/);
+    if (!m) {
+        throw new Error('Invalid symbol');
+    }
+    return { name: m[2], precision: +m[1] };
+};
+exports.stringToSymbol = stringToSymbol;
+/** Convert `Symbol` to `string`. format: `precision,NAME`. */
+var symbolToString = function (_a) {
+    var name = _a.name, precision = _a.precision;
+    return precision + ',' + name;
+};
+exports.symbolToString = symbolToString;
+/** Convert binary data to hex */
+var arrayToHex = function (data) {
+    var e_1, _a;
+    var result = '';
+    try {
+        for (var data_1 = __values(data), data_1_1 = data_1.next(); !data_1_1.done; data_1_1 = data_1.next()) {
+            var x = data_1_1.value;
+            result += ('00' + x.toString(16)).slice(-2);
+        }
+    }
+    catch (e_1_1) { e_1 = { error: e_1_1 }; }
+    finally {
+        try {
+            if (data_1_1 && !data_1_1.done && (_a = data_1.return)) _a.call(data_1);
+        }
+        finally { if (e_1) throw e_1.error; }
+    }
+    return result.toUpperCase();
+};
+exports.arrayToHex = arrayToHex;
+/** Convert hex to binary data */
+var hexToUint8Array = function (hex) {
+    if (typeof hex !== 'string') {
+        throw new Error('Expected string containing hex digits');
+    }
+    if (hex.length % 2) {
+        throw new Error('Odd number of hex digits');
+    }
+    var l = hex.length / 2;
+    var result = new Uint8Array(l);
+    for (var i = 0; i < l; ++i) {
+        var x = parseInt(hex.substr(i * 2, 2), 16);
+        if (Number.isNaN(x)) {
+            throw new Error('Expected hex string');
+        }
+        result[i] = x;
+    }
+    return result;
+};
+exports.hexToUint8Array = hexToUint8Array;
+function serializeUnknown(buffer, data) {
+    throw new Error('Don\'t know how to serialize ' + this.name);
+}
+function deserializeUnknown(buffer) {
+    throw new Error('Don\'t know how to deserialize ' + this.name);
+}
+function serializeStruct(buffer, data, state, allowExtensions) {
+    var e_2, _a;
+    if (state === void 0) { state = new SerializerState(); }
+    if (allowExtensions === void 0) { allowExtensions = true; }
+    if (typeof data !== 'object') {
+        throw new Error('expected object containing data: ' + JSON.stringify(data));
+    }
+    if (this.base) {
+        this.base.serialize(buffer, data, state, allowExtensions);
+    }
+    try {
+        for (var _b = __values(this.fields), _c = _b.next(); !_c.done; _c = _b.next()) {
+            var field = _c.value;
+            if (field.name in data) {
+                if (state.skippedBinaryExtension) {
+                    throw new Error('unexpected ' + this.name + '.' + field.name);
+                }
+                field.type.serialize(buffer, data[field.name], state, allowExtensions && field === this.fields[this.fields.length - 1]);
+            }
+            else {
+                if (allowExtensions && field.type.extensionOf) {
+                    state.skippedBinaryExtension = true;
+                }
+                else {
+                    throw new Error('missing ' + this.name + '.' + field.name + ' (type=' + field.type.name + ')');
+                }
+            }
+        }
+    }
+    catch (e_2_1) { e_2 = { error: e_2_1 }; }
+    finally {
+        try {
+            if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
+        }
+        finally { if (e_2) throw e_2.error; }
+    }
+}
+function deserializeStruct(buffer, state, allowExtensions) {
+    var e_3, _a;
+    if (state === void 0) { state = new SerializerState(); }
+    if (allowExtensions === void 0) { allowExtensions = true; }
+    var result;
+    if (this.base) {
+        result = this.base.deserialize(buffer, state, allowExtensions);
+    }
+    else {
+        result = {};
+    }
+    try {
+        for (var _b = __values(this.fields), _c = _b.next(); !_c.done; _c = _b.next()) {
+            var field = _c.value;
+            if (allowExtensions && field.type.extensionOf && !buffer.haveReadData()) {
+                state.skippedBinaryExtension = true;
+            }
+            else {
+                result[field.name] = field.type.deserialize(buffer, state, allowExtensions);
+            }
+        }
+    }
+    catch (e_3_1) { e_3 = { error: e_3_1 }; }
+    finally {
+        try {
+            if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
+        }
+        finally { if (e_3) throw e_3.error; }
+    }
+    return result;
+}
+function serializeVariant(buffer, data, state, allowExtensions) {
+    if (!Array.isArray(data) || data.length !== 2 || typeof data[0] !== 'string') {
+        throw new Error('expected variant: ["type", value]');
+    }
+    var i = this.fields.findIndex(function (field) { return field.name === data[0]; });
+    if (i < 0) {
+        throw new Error("type \"" + data[0] + "\" is not valid for variant");
+    }
+    buffer.pushVaruint32(i);
+    this.fields[i].type.serialize(buffer, data[1], state, allowExtensions);
+}
+function deserializeVariant(buffer, state, allowExtensions) {
+    var i = buffer.getVaruint32();
+    if (i >= this.fields.length) {
+        throw new Error("type index " + i + " is not valid for variant");
+    }
+    var field = this.fields[i];
+    return [field.name, field.type.deserialize(buffer, state, allowExtensions)];
+}
+function serializeArray(buffer, data, state, allowExtensions) {
+    var e_4, _a;
+    buffer.pushVaruint32(data.length);
+    try {
+        for (var data_2 = __values(data), data_2_1 = data_2.next(); !data_2_1.done; data_2_1 = data_2.next()) {
+            var item = data_2_1.value;
+            this.arrayOf.serialize(buffer, item, state, false);
+        }
+    }
+    catch (e_4_1) { e_4 = { error: e_4_1 }; }
+    finally {
+        try {
+            if (data_2_1 && !data_2_1.done && (_a = data_2.return)) _a.call(data_2);
+        }
+        finally { if (e_4) throw e_4.error; }
+    }
+}
+function deserializeArray(buffer, state, allowExtensions) {
+    var len = buffer.getVaruint32();
+    var result = [];
+    for (var i = 0; i < len; ++i) {
+        result.push(this.arrayOf.deserialize(buffer, state, false));
+    }
+    return result;
+}
+function serializeOptional(buffer, data, state, allowExtensions) {
+    if (data === null || data === undefined) {
+        buffer.push(0);
+    }
+    else {
+        buffer.push(1);
+        this.optionalOf.serialize(buffer, data, state, allowExtensions);
+    }
+}
+function deserializeOptional(buffer, state, allowExtensions) {
+    if (buffer.get()) {
+        return this.optionalOf.deserialize(buffer, state, allowExtensions);
+    }
+    else {
+        return null;
+    }
+}
+function serializeExtension(buffer, data, state, allowExtensions) {
+    this.extensionOf.serialize(buffer, data, state, allowExtensions);
+}
+function deserializeExtension(buffer, state, allowExtensions) {
+    return this.extensionOf.deserialize(buffer, state, allowExtensions);
+}
+var createType = function (attrs) {
+    return __assign({ name: '<missing name>', aliasOfName: '', arrayOf: null, optionalOf: null, extensionOf: null, baseName: '', base: null, fields: [], serialize: serializeUnknown, deserialize: deserializeUnknown }, attrs);
+};
+var checkRange = function (orig, converted) {
+    if (Number.isNaN(+orig) || Number.isNaN(+converted) || (typeof orig !== 'number' && typeof orig !== 'string')) {
+        throw new Error('Expected number');
+    }
+    if (+orig !== +converted) {
+        throw new Error('Number is out of range');
+    }
+    return +orig;
+};
+/** Create the set of types built-in to the abi format */
+var createInitialTypes = function () {
+    var result = new Map(Object.entries({
+        bool: createType({
+            name: 'bool',
+            serialize: function (buffer, data) {
+                if (!(typeof data === 'boolean' || typeof data === 'number' && (data === 1 || data === 0))) {
+                    throw new Error('Expected boolean or number equal to 1 or 0');
+                }
+                buffer.push(data ? 1 : 0);
+            },
+            deserialize: function (buffer) { return !!buffer.get(); },
+        }),
+        uint8: createType({
+            name: 'uint8',
+            serialize: function (buffer, data) { buffer.push(checkRange(data, data & 0xff)); },
+            deserialize: function (buffer) { return buffer.get(); },
+        }),
+        int8: createType({
+            name: 'int8',
+            serialize: function (buffer, data) { buffer.push(checkRange(data, data << 24 >> 24)); },
+            deserialize: function (buffer) { return buffer.get() << 24 >> 24; },
+        }),
+        uint16: createType({
+            name: 'uint16',
+            serialize: function (buffer, data) { buffer.pushUint16(checkRange(data, data & 0xffff)); },
+            deserialize: function (buffer) { return buffer.getUint16(); },
+        }),
+        int16: createType({
+            name: 'int16',
+            serialize: function (buffer, data) { buffer.pushUint16(checkRange(data, data << 16 >> 16)); },
+            deserialize: function (buffer) { return buffer.getUint16() << 16 >> 16; },
+        }),
+        uint32: createType({
+            name: 'uint32',
+            serialize: function (buffer, data) { buffer.pushUint32(checkRange(data, data >>> 0)); },
+            deserialize: function (buffer) { return buffer.getUint32(); },
+        }),
+        uint64: createType({
+            name: 'uint64',
+            serialize: function (buffer, data) {
+                buffer.pushArray(numeric.decimalToBinary(8, '' + data));
+            },
+            deserialize: function (buffer) { return numeric.binaryToDecimal(buffer.getUint8Array(8)); },
+        }),
+        int64: createType({
+            name: 'int64',
+            serialize: function (buffer, data) {
+                buffer.pushArray(numeric.signedDecimalToBinary(8, '' + data));
+            },
+            deserialize: function (buffer) { return numeric.signedBinaryToDecimal(buffer.getUint8Array(8)); },
+        }),
+        int32: createType({
+            name: 'int32',
+            serialize: function (buffer, data) { buffer.pushUint32(checkRange(data, data | 0)); },
+            deserialize: function (buffer) { return buffer.getUint32() | 0; },
+        }),
+        varuint32: createType({
+            name: 'varuint32',
+            serialize: function (buffer, data) { buffer.pushVaruint32(checkRange(data, data >>> 0)); },
+            deserialize: function (buffer) { return buffer.getVaruint32(); },
+        }),
+        varint32: createType({
+            name: 'varint32',
+            serialize: function (buffer, data) { buffer.pushVarint32(checkRange(data, data | 0)); },
+            deserialize: function (buffer) { return buffer.getVarint32(); },
+        }),
+        uint128: createType({
+            name: 'uint128',
+            serialize: function (buffer, data) { buffer.pushArray(numeric.decimalToBinary(16, '' + data)); },
+            deserialize: function (buffer) { return numeric.binaryToDecimal(buffer.getUint8Array(16)); },
+        }),
+        int128: createType({
+            name: 'int128',
+            serialize: function (buffer, data) {
+                buffer.pushArray(numeric.signedDecimalToBinary(16, '' + data));
+            },
+            deserialize: function (buffer) { return numeric.signedBinaryToDecimal(buffer.getUint8Array(16)); },
+        }),
+        float32: createType({
+            name: 'float32',
+            serialize: function (buffer, data) { buffer.pushFloat32(data); },
+            deserialize: function (buffer) { return buffer.getFloat32(); },
+        }),
+        float64: createType({
+            name: 'float64',
+            serialize: function (buffer, data) { buffer.pushFloat64(data); },
+            deserialize: function (buffer) { return buffer.getFloat64(); },
+        }),
+        float128: createType({
+            name: 'float128',
+            serialize: function (buffer, data) { buffer.pushUint8ArrayChecked(exports.hexToUint8Array(data), 16); },
+            deserialize: function (buffer) { return exports.arrayToHex(buffer.getUint8Array(16)); },
+        }),
+        bytes: createType({
+            name: 'bytes',
+            serialize: function (buffer, data) {
+                if (data instanceof Uint8Array || Array.isArray(data)) {
+                    buffer.pushBytes(data);
+                }
+                else {
+                    buffer.pushBytes(exports.hexToUint8Array(data));
+                }
+            },
+            deserialize: function (buffer, state) {
+                if (state && state.options.bytesAsUint8Array) {
+                    return buffer.getBytes();
+                }
+                else {
+                    return exports.arrayToHex(buffer.getBytes());
+                }
+            },
+        }),
+        string: createType({
+            name: 'string',
+            serialize: function (buffer, data) { buffer.pushString(data); },
+            deserialize: function (buffer) { return buffer.getString(); },
+        }),
+        name: createType({
+            name: 'name',
+            serialize: function (buffer, data) { buffer.pushName(data); },
+            deserialize: function (buffer) { return buffer.getName(); },
+        }),
+        time_point: createType({
+            name: 'time_point',
+            serialize: function (buffer, data) { buffer.pushNumberAsUint64(exports.dateToTimePoint(data)); },
+            deserialize: function (buffer) { return exports.timePointToDate(buffer.getUint64AsNumber()); },
+        }),
+        time_point_sec: createType({
+            name: 'time_point_sec',
+            serialize: function (buffer, data) { buffer.pushUint32(exports.dateToTimePointSec(data)); },
+            deserialize: function (buffer) { return exports.timePointSecToDate(buffer.getUint32()); },
+        }),
+        block_timestamp_type: createType({
+            name: 'block_timestamp_type',
+            serialize: function (buffer, data) { buffer.pushUint32(exports.dateToBlockTimestamp(data)); },
+            deserialize: function (buffer) { return exports.blockTimestampToDate(buffer.getUint32()); },
+        }),
+        symbol_code: createType({
+            name: 'symbol_code',
+            serialize: function (buffer, data) { buffer.pushSymbolCode(data); },
+            deserialize: function (buffer) { return buffer.getSymbolCode(); },
+        }),
+        symbol: createType({
+            name: 'symbol',
+            serialize: function (buffer, data) { buffer.pushSymbol(exports.stringToSymbol(data)); },
+            deserialize: function (buffer) { return exports.symbolToString(buffer.getSymbol()); },
+        }),
+        asset: createType({
+            name: 'asset',
+            serialize: function (buffer, data) { buffer.pushAsset(data); },
+            deserialize: function (buffer) { return buffer.getAsset(); },
+        }),
+        checksum160: createType({
+            name: 'checksum160',
+            serialize: function (buffer, data) { buffer.pushUint8ArrayChecked(exports.hexToUint8Array(data), 20); },
+            deserialize: function (buffer) { return exports.arrayToHex(buffer.getUint8Array(20)); },
+        }),
+        checksum256: createType({
+            name: 'checksum256',
+            serialize: function (buffer, data) { buffer.pushUint8ArrayChecked(exports.hexToUint8Array(data), 32); },
+            deserialize: function (buffer) { return exports.arrayToHex(buffer.getUint8Array(32)); },
+        }),
+        checksum512: createType({
+            name: 'checksum512',
+            serialize: function (buffer, data) { buffer.pushUint8ArrayChecked(exports.hexToUint8Array(data), 64); },
+            deserialize: function (buffer) { return exports.arrayToHex(buffer.getUint8Array(64)); },
+        }),
+        public_key: createType({
+            name: 'public_key',
+            serialize: function (buffer, data) { buffer.pushPublicKey(data); },
+            deserialize: function (buffer) { return buffer.getPublicKey(); },
+        }),
+        private_key: createType({
+            name: 'private_key',
+            serialize: function (buffer, data) { buffer.pushPrivateKey(data); },
+            deserialize: function (buffer) { return buffer.getPrivateKey(); },
+        }),
+        signature: createType({
+            name: 'signature',
+            serialize: function (buffer, data) { buffer.pushSignature(data); },
+            deserialize: function (buffer) { return buffer.getSignature(); },
+        }),
+    }));
+    result.set('extended_asset', createType({
+        name: 'extended_asset',
+        baseName: '',
+        fields: [
+            { name: 'quantity', typeName: 'asset', type: result.get('asset') },
+            { name: 'contract', typeName: 'name', type: result.get('name') },
+        ],
+        serialize: serializeStruct,
+        deserialize: deserializeStruct,
+    }));
+    return result;
+}; // createInitialTypes()
+exports.createInitialTypes = createInitialTypes;
+/** Get type from `types` */
+var getType = function (types, name) {
+    var type = types.get(name);
+    if (type && type.aliasOfName) {
+        return exports.getType(types, type.aliasOfName);
+    }
+    if (type) {
+        return type;
+    }
+    if (name.endsWith('[]')) {
+        return createType({
+            name: name,
+            arrayOf: exports.getType(types, name.substr(0, name.length - 2)),
+            serialize: serializeArray,
+            deserialize: deserializeArray,
+        });
+    }
+    if (name.endsWith('?')) {
+        return createType({
+            name: name,
+            optionalOf: exports.getType(types, name.substr(0, name.length - 1)),
+            serialize: serializeOptional,
+            deserialize: deserializeOptional,
+        });
+    }
+    if (name.endsWith('$')) {
+        return createType({
+            name: name,
+            extensionOf: exports.getType(types, name.substr(0, name.length - 1)),
+            serialize: serializeExtension,
+            deserialize: deserializeExtension,
+        });
+    }
+    throw new Error('Unknown type: ' + name);
+};
+exports.getType = getType;
+/**
+ * Get types from abi
+ *
+ * @param initialTypes Set of types to build on.
+ * In most cases, it's best to fill this from a fresh call to `getTypesFromAbi()`.
+ */
+var getTypesFromAbi = function (initialTypes, abi) {
+    var e_5, _a, e_6, _b, e_7, _c, e_8, _d, e_9, _e;
+    var types = new Map(initialTypes);
+    if (abi.types) {
+        try {
+            for (var _f = __values(abi.types), _g = _f.next(); !_g.done; _g = _f.next()) {
+                var _h = _g.value, new_type_name = _h.new_type_name, type = _h.type;
+                types.set(new_type_name, createType({ name: new_type_name, aliasOfName: type }));
+            }
+        }
+        catch (e_5_1) { e_5 = { error: e_5_1 }; }
+        finally {
+            try {
+                if (_g && !_g.done && (_a = _f.return)) _a.call(_f);
+            }
+            finally { if (e_5) throw e_5.error; }
+        }
+    }
+    if (abi.structs) {
+        try {
+            for (var _j = __values(abi.structs), _k = _j.next(); !_k.done; _k = _j.next()) {
+                var _l = _k.value, name_1 = _l.name, base = _l.base, fields = _l.fields;
+                types.set(name_1, createType({
+                    name: name_1,
+                    baseName: base,
+                    fields: fields.map(function (_a) {
+                        var n = _a.name, type = _a.type;
+                        return ({ name: n, typeName: type, type: null });
+                    }),
+                    serialize: serializeStruct,
+                    deserialize: deserializeStruct,
+                }));
+            }
+        }
+        catch (e_6_1) { e_6 = { error: e_6_1 }; }
+        finally {
+            try {
+                if (_k && !_k.done && (_b = _j.return)) _b.call(_j);
+            }
+            finally { if (e_6) throw e_6.error; }
+        }
+    }
+    if (abi.variants) {
+        try {
+            for (var _m = __values(abi.variants), _o = _m.next(); !_o.done; _o = _m.next()) {
+                var _p = _o.value, name_2 = _p.name, t = _p.types;
+                types.set(name_2, createType({
+                    name: name_2,
+                    fields: t.map(function (s) { return ({ name: s, typeName: s, type: null }); }),
+                    serialize: serializeVariant,
+                    deserialize: deserializeVariant,
+                }));
+            }
+        }
+        catch (e_7_1) { e_7 = { error: e_7_1 }; }
+        finally {
+            try {
+                if (_o && !_o.done && (_c = _m.return)) _c.call(_m);
+            }
+            finally { if (e_7) throw e_7.error; }
+        }
+    }
+    try {
+        for (var types_1 = __values(types), types_1_1 = types_1.next(); !types_1_1.done; types_1_1 = types_1.next()) {
+            var _q = __read(types_1_1.value, 2), name_3 = _q[0], type = _q[1];
+            if (type.baseName) {
+                type.base = exports.getType(types, type.baseName);
+            }
+            try {
+                for (var _r = (e_9 = void 0, __values(type.fields)), _s = _r.next(); !_s.done; _s = _r.next()) {
+                    var field = _s.value;
+                    field.type = exports.getType(types, field.typeName);
+                }
+            }
+            catch (e_9_1) { e_9 = { error: e_9_1 }; }
+            finally {
+                try {
+                    if (_s && !_s.done && (_e = _r.return)) _e.call(_r);
+                }
+                finally { if (e_9) throw e_9.error; }
+            }
+        }
+    }
+    catch (e_8_1) { e_8 = { error: e_8_1 }; }
+    finally {
+        try {
+            if (types_1_1 && !types_1_1.done && (_d = types_1.return)) _d.call(types_1);
+        }
+        finally { if (e_8) throw e_8.error; }
+    }
+    return types;
+}; // getTypesFromAbi
+exports.getTypesFromAbi = getTypesFromAbi;
+var reverseHex = function (h) {
+    return h.substr(6, 2) + h.substr(4, 2) + h.substr(2, 2) + h.substr(0, 2);
+};
+/** TAPoS: Return transaction fields which reference `refBlock` and expire `expireSeconds` after `timestamp` */
+var transactionHeader = function (refBlock, expireSeconds) {
+    var timestamp = refBlock.header ? refBlock.header.timestamp : refBlock.timestamp;
+    var prefix = parseInt(reverseHex(refBlock.id.substr(16, 8)), 16);
+    return {
+        expiration: exports.timePointSecToDate(exports.dateToTimePointSec(timestamp) + expireSeconds),
+        ref_block_num: refBlock.block_num & 0xffff,
+        ref_block_prefix: prefix,
+    };
+};
+exports.transactionHeader = transactionHeader;
+/** Convert action data to serialized form (hex) */
+var serializeActionData = function (contract, account, name, data, textEncoder, textDecoder) {
+    var action = contract.actions.get(name);
+    if (!action) {
+        throw new Error("Unknown action " + name + " in contract " + account);
+    }
+    var buffer = new SerialBuffer({ textEncoder: textEncoder, textDecoder: textDecoder });
+    action.serialize(buffer, data);
+    return exports.arrayToHex(buffer.asUint8Array());
+};
+exports.serializeActionData = serializeActionData;
+/** Return action in serialized form */
+var serializeAction = function (contract, account, name, authorization, data, textEncoder, textDecoder) {
+    return {
+        account: account,
+        name: name,
+        authorization: authorization,
+        data: exports.serializeActionData(contract, account, name, data, textEncoder, textDecoder),
+    };
+};
+exports.serializeAction = serializeAction;
+/** Deserialize action data. If `data` is a `string`, then it's assumed to be in hex. */
+var deserializeActionData = function (contract, account, name, data, textEncoder, textDecoder) {
+    var action = contract.actions.get(name);
+    if (typeof data === 'string') {
+        data = exports.hexToUint8Array(data);
+    }
+    if (!action) {
+        throw new Error("Unknown action " + name + " in contract " + account);
+    }
+    var buffer = new SerialBuffer({ textDecoder: textDecoder, textEncoder: textEncoder });
+    buffer.pushArray(data);
+    return action.deserialize(buffer);
+};
+exports.deserializeActionData = deserializeActionData;
+/** Deserialize action. If `data` is a `string`, then it's assumed to be in hex. */
+var deserializeAction = function (contract, account, name, authorization, data, textEncoder, textDecoder) {
+    return {
+        account: account,
+        name: name,
+        authorization: authorization,
+        data: exports.deserializeActionData(contract, account, name, data, textEncoder, textDecoder),
+    };
+};
+exports.deserializeAction = deserializeAction;
+//# sourceMappingURL=eosjs-serialize.js.map
+
+/***/ }),
+
+/***/ "./node_modules/eosjs/dist/index.js":
+/*!******************************************!*\
+  !*** ./node_modules/eosjs/dist/index.js ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Serialize = exports.RpcError = exports.RpcInterfaces = exports.Numeric = exports.JsonRpc = exports.ApiInterfaces = exports.Api = void 0;
+var eosjs_api_1 = __webpack_require__(/*! ./eosjs-api */ "./node_modules/eosjs/dist/eosjs-api.js");
+Object.defineProperty(exports, "Api", ({ enumerable: true, get: function () { return eosjs_api_1.Api; } }));
+var ApiInterfaces = __webpack_require__(/*! ./eosjs-api-interfaces */ "./node_modules/eosjs/dist/eosjs-api-interfaces.js");
+exports.ApiInterfaces = ApiInterfaces;
+var eosjs_jsonrpc_1 = __webpack_require__(/*! ./eosjs-jsonrpc */ "./node_modules/eosjs/dist/eosjs-jsonrpc.js");
+Object.defineProperty(exports, "JsonRpc", ({ enumerable: true, get: function () { return eosjs_jsonrpc_1.JsonRpc; } }));
+var Numeric = __webpack_require__(/*! ./eosjs-numeric */ "./node_modules/eosjs/dist/eosjs-numeric.js");
+exports.Numeric = Numeric;
+var RpcInterfaces = __webpack_require__(/*! ./eosjs-rpc-interfaces */ "./node_modules/eosjs/dist/eosjs-rpc-interfaces.js");
+exports.RpcInterfaces = RpcInterfaces;
+var eosjs_rpcerror_1 = __webpack_require__(/*! ./eosjs-rpcerror */ "./node_modules/eosjs/dist/eosjs-rpcerror.js");
+Object.defineProperty(exports, "RpcError", ({ enumerable: true, get: function () { return eosjs_rpcerror_1.RpcError; } }));
+var Serialize = __webpack_require__(/*! ./eosjs-serialize */ "./node_modules/eosjs/dist/eosjs-serialize.js");
+exports.Serialize = Serialize;
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ "./node_modules/eosjs/dist/ripemd.js":
+/*!*******************************************!*\
+  !*** ./node_modules/eosjs/dist/ripemd.js ***!
+  \*******************************************/
+/***/ ((module) => {
+
+"use strict";
+// https://gist.githubusercontent.com/wlzla000/bac83df6d3c51916c4dd0bc947e46947/raw/7ee3462b095ab22580ddaf191f44a590da6fe33b/RIPEMD-160.js
+
+/*
+	RIPEMD-160.js
+
+		developed
+			by K. (https://github.com/wlzla000)
+			on December 27-29, 2017,
+
+		licensed under
+
+
+		the MIT license
+
+		Copyright (c) 2017 K.
+
+		 Permission is hereby granted, free of charge, to any person
+		obtaining a copy of this software and associated documentation
+		files (the "Software"), to deal in the Software without
+		restriction, including without limitation the rights to use,
+		copy, modify, merge, publish, distribute, sublicense, and/or
+		sell copies of the Software, and to permit persons to whom the
+		Software is furnished to do so, subject to the following
+		conditions:
+
+		 The above copyright notice and this permission notice shall be
+		included in all copies or substantial portions of the Software.
+
+		 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+		EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+		OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+		NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+		HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+		WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+		FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+		OTHER DEALINGS IN THE SOFTWARE.
+*/
+/* eslint-disable */
+
+
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var RIPEMD160 = function () {
+    function RIPEMD160() {
+        // https://webcache.googleusercontent.com/search?q=cache:CnLOgolTHYEJ:https://www.cosic.esat.kuleuven.be/publications/article-317.pdf
+        // http://shodhganga.inflibnet.ac.in/bitstream/10603/22978/13/13_appendix.pdf
+
+        _classCallCheck(this, RIPEMD160);
+    }
+
+    _createClass(RIPEMD160, null, [{
+        key: "get_n_pad_bytes",
+        value: function get_n_pad_bytes(message_size /* in bytes, 1 byte is 8 bits. */) {
+            //  Obtain the number of bytes needed to pad the message.
+            // It does not contain the size of the message size information.
+            /*
+           https://webcache.googleusercontent.com/search?q=cache:CnLOgolTHYEJ:https://www.cosic.esat.kuleuven.be/publications/article-317.pdf
+             The Cryptographic Hash Function RIPEMD-160
+             written by
+             Bart Preneel,
+             Hans Dobbertin,
+             Antoon Bosselaers
+           in
+             1997.
+             --------------------------------------------------
+             §5     Description of RIPEMD-160
+             ......
+              In order to guarantee that the total input size is a
+           multiple of 512 bits, the input is padded in the same
+           way as for all the members of the MD4-family: one
+           appends a single 1 followed by a string of 0s (the
+           number of 0s lies between 0 and 511); the last 64 bits
+           of the extended input contain the binary representation
+           of the input size in bits, least significant byte first.
+         */
+            /*
+           https://tools.ietf.org/rfc/rfc1186.txt
+             RFC 1186: MD4 Message Digest Algorithm.
+             written by
+             Ronald Linn Rivest
+           in
+             October 1990.
+             --------------------------------------------------
+             §3     MD4 Algorithm Description
+             ......
+             Step 1. Append padding bits
+              The message is "padded" (extended) so that its length
+           (in bits) is congruent to 448, modulo 512. That is, the
+           message is extended so that it is just 64 bits shy of
+           being a multiple of 512 bits long. Padding is always
+           performed, even if the length of the message is already
+           congruent to 448, modulo 512 (in which case 512 bits of
+           padding are added).
+              Padding is performed as follows: a single "1" bit is
+           appended to the message, and then enough zero bits are
+           appended so that the length in bits of the padded
+           message becomes congruent to 448, modulo 512.
+             Step 2. Append length
+              A 64-bit representation of b (the length of the message
+           before the padding bits were added) is appended to the
+           result of the previous step. In the unlikely event that
+           b is greater than 2^64, then only the low-order 64 bits
+           of b are used. (These bits are appended as two 32-bit
+           words and appended low-order word first in accordance
+           with the previous conventions.)
+              At this point the resulting message (after padding with
+           bits and with b) has a length that is an exact multiple
+           of 512 bits. Equivalently, this message has a length
+           that is an exact multiple of 16 (32-bit) words. Let
+           M[0 ... N-1] denote the words of the resulting message,
+           where N is a multiple of 16.
+         */
+            // https://crypto.stackexchange.com/a/32407/54568
+            /*
+           Example case  # 1
+             [0 bit: message.]
+             [1 bit: 1.]
+             [447 bits: 0.]
+             [64 bits: message size information.]
+             Example case  # 2
+             [512-bits: message]
+             [1 bit: 1.]
+             [447 bits: 0.]
+             [64 bits: message size information.]
+             Example case  # 3
+             [(512 - 64 = 448) bits: message.]
+             [1 bit: 1.]
+             [511 bits: 0.]
+             [64 bits: message size information.]
+             Example case  # 4
+             [(512 - 65 = 447) bits: message.]
+             [1 bit: 1.]
+             [0 bit: 0.]
+             [64 bits: message size information.]
+         */
+            // The number of padding zero bits:
+            //      511 - [{(message size in bits) + 64} (mod 512)]
+            return 64 - (message_size + 8 & 63 /* 63 */);
+        }
+    }, {
+        key: "pad",
+        value: function pad(message /* An ArrayBuffer. */) {
+            var message_size = message.byteLength;
+            var n_pad = RIPEMD160.get_n_pad_bytes(message_size);
+
+            //  `Number.MAX_SAFE_INTEGER` is ((2 ** 53) - 1) and
+            // bitwise operation in Javascript is done on 32-bits operands.
+            var divmod = function divmod(dividend, divisor) {
+                return [Math.floor(dividend / divisor), dividend % divisor];
+            };
+            /*
+         To shift
+           00000000 000????? ???????? ???????? ???????? ???????? ???????? ????????
+                                            t o
+          00000000 ???????? ???????? ???????? ???????? ???????? ???????? ?????000
+         --------------------------------------------------------------------------------
+         Method #1
+            00000000 000????? ???????? ????????  ???????? ???????? ???????? ????????
+          [00000000 000AAAAA AAAAAAAA AAAAAAAA] (<A> captured)
+          [00000000 AAAAAAAA AAAAAAAA AAAAA000] (<A> shifted)
+                                (<B> captured) [BBBBBBBB BBBBBBBB BBBBBBBB BBBBBBBB]
+                            (<B> shifted) [BBB][BBBBBBBB BBBBBBBB BBBBBBBB BBBBB000]
+          [00000000 AAAAAAAA AAAAAAAA AAAAABBB] (<A> & <B_2> merged)
+          [00000000 AAAAAAAA AAAAAAAA AAAAABBB][BBBBBBBB BBBBBBBB BBBBBBBB BBBBB000]
+           00000000 ???????? ???????? ????????  ???????? ???????? ???????? ?????000
+           const uint32_max_plus_1 = 0x100000000; // (2 ** 32)
+         const [
+           msg_byte_size_most, // Value range [0, (2 ** 21) - 1].
+           msg_byte_size_least // Value range [0, (2 ** 32) - 1].
+         ] = divmod(message_size, uint32_max_plus_1);
+         const [
+           carry, // Value range [0, 7].
+           msg_bit_size_least // Value range [0, (2 ** 32) - 8].
+         ] = divmod(message_byte_size_least * 8, uint32_max_plus_1);
+         const message_bit_size_most = message_byte_size_most * 8
+           + carry; // Value range [0, (2 ** 24) - 1].
+         --------------------------------------------------------------------------------
+         Method #2
+           00000000 000????? ???????? ????????  ???????? ???????? ???????? ????????
+             [00000 000AAAAA AAAAAAAA AAAAAAAA  AAA] (<A> captured)
+                                (<B> captured) [000BBBBB BBBBBBBB BBBBBBBB BBBBBBBB]
+                                 (<B> shifted) [BBBBBBBB BBBBBBBB BBBBBBBB BBBBB000]
+          [00000000 AAAAAAAA AAAAAAAA AAAAAAAA][BBBBBBBB BBBBBBBB BBBBBBBB BBBBB000]
+           00000000 ???????? ???????? ????????  ???????? ???????? ???????? ?????000
+           */
+
+            var _divmod$map = divmod(message_size, 536870912 /* (2 ** 29) */).map(function (x, index) {
+                  return index ? x * 8 : x;
+              }),
+              _divmod$map2 = _slicedToArray(_divmod$map, 2),
+              msg_bit_size_most = _divmod$map2[0],
+              msg_bit_size_least = _divmod$map2[1];
+
+            // `ArrayBuffer.transfer()` is not supported.
+
+
+            var padded = new Uint8Array(message_size + n_pad + 8);
+            padded.set(new Uint8Array(message), 0);
+            var data_view = new DataView(padded.buffer);
+            data_view.setUint8(message_size, 128);
+            data_view.setUint32(message_size + n_pad, msg_bit_size_least, true // Little-endian
+            );
+            data_view.setUint32(message_size + n_pad + 4, msg_bit_size_most, true // Little-endian
+            );
+
+            return padded.buffer;
+        }
+    }, {
+        key: "f",
+        value: function f(j, x, y, z) {
+            if (0 <= j && j <= 15) {
+                // Exclusive-OR
+                return x ^ y ^ z;
+            }
+            if (16 <= j && j <= 31) {
+                // Multiplexing (muxing)
+                return x & y | ~x & z;
+            }
+            if (32 <= j && j <= 47) {
+                return (x | ~y) ^ z;
+            }
+            if (48 <= j && j <= 63) {
+                // Multiplexing (muxing)
+                return x & z | y & ~z;
+            }
+            if (64 <= j && j <= 79) {
+                return x ^ (y | ~z);
+            }
+        }
+    }, {
+        key: "K",
+        value: function K(j) {
+            if (0 <= j && j <= 15) {
+                return 0x00000000;
+            }
+            if (16 <= j && j <= 31) {
+                // Math.floor((2 ** 30) * Math.SQRT2)
+                return 0x5A827999;
+            }
+            if (32 <= j && j <= 47) {
+                // Math.floor((2 ** 30) * Math.sqrt(3))
+                return 0x6ED9EBA1;
+            }
+            if (48 <= j && j <= 63) {
+                // Math.floor((2 ** 30) * Math.sqrt(5))
+                return 0x8F1BBCDC;
+            }
+            if (64 <= j && j <= 79) {
+                // Math.floor((2 ** 30) * Math.sqrt(7))
+                return 0xA953FD4E;
+            }
+        }
+    }, {
+        key: "KP",
+        value: function KP(j) // K'
+        {
+            if (0 <= j && j <= 15) {
+                // Math.floor((2 ** 30) * Math.cbrt(2))
+                return 0x50A28BE6;
+            }
+            if (16 <= j && j <= 31) {
+                // Math.floor((2 ** 30) * Math.cbrt(3))
+                return 0x5C4DD124;
+            }
+            if (32 <= j && j <= 47) {
+                // Math.floor((2 ** 30) * Math.cbrt(5))
+                return 0x6D703EF3;
+            }
+            if (48 <= j && j <= 63) {
+                // Math.floor((2 ** 30) * Math.cbrt(7))
+                return 0x7A6D76E9;
+            }
+            if (64 <= j && j <= 79) {
+                return 0x00000000;
+            }
+        }
+    }, {
+        key: "add_modulo32",
+        value: function add_modulo32() /* ...... */{
+            // 1.  Modulo addition (addition modulo) is associative.
+            //    https://proofwiki.org/wiki/Modulo_Addition_is_Associative
+            // 2.  Bitwise operation in Javascript
+            //    is done on 32-bits operands
+            //    and results in a 32-bits value.
+            return Array.from(arguments).reduce(function (a, b) {
+                return a + b;
+            }, 0) | 0;
+        }
+    }, {
+        key: "rol32",
+        value: function rol32(value, count) {
+            // Cyclic left shift (rotate) on 32-bits value.
+            return value << count | value >>> 32 - count;
+        }
+    }, {
+        key: "hash",
+        value: function hash(message /* An ArrayBuffer. */) {
+            //////////       Padding       //////////
+
+            // The padded message.
+            var padded = RIPEMD160.pad(message);
+
+            //////////     Compression     //////////
+
+            // Message word selectors.
+            var r = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 7, 4, 13, 1, 10, 6, 15, 3, 12, 0, 9, 5, 2, 14, 11, 8, 3, 10, 14, 4, 9, 15, 8, 1, 2, 7, 0, 6, 13, 11, 5, 12, 1, 9, 11, 10, 0, 8, 12, 4, 13, 3, 7, 15, 14, 5, 6, 2, 4, 0, 5, 9, 7, 12, 2, 10, 14, 1, 3, 8, 11, 6, 15, 13];
+            var rP = [// r'
+                5, 14, 7, 0, 9, 2, 11, 4, 13, 6, 15, 8, 1, 10, 3, 12, 6, 11, 3, 7, 0, 13, 5, 10, 14, 15, 8, 12, 4, 9, 1, 2, 15, 5, 1, 3, 7, 14, 6, 9, 11, 8, 12, 2, 10, 0, 4, 13, 8, 6, 4, 1, 3, 11, 15, 0, 5, 12, 2, 13, 9, 7, 10, 14, 12, 15, 10, 4, 1, 5, 8, 7, 6, 2, 13, 14, 0, 3, 9, 11];
+
+            // Amounts for 'rotate left' operation.
+            var s = [11, 14, 15, 12, 5, 8, 7, 9, 11, 13, 14, 15, 6, 7, 9, 8, 7, 6, 8, 13, 11, 9, 7, 15, 7, 12, 15, 9, 11, 7, 13, 12, 11, 13, 6, 7, 14, 9, 13, 15, 14, 8, 13, 6, 5, 12, 7, 5, 11, 12, 14, 15, 14, 15, 9, 8, 9, 14, 5, 6, 8, 6, 5, 12, 9, 15, 5, 11, 6, 8, 13, 12, 5, 12, 13, 14, 11, 8, 5, 6];
+            var sP = [// s'
+                8, 9, 9, 11, 13, 15, 15, 5, 7, 7, 8, 11, 14, 14, 12, 6, 9, 13, 15, 7, 12, 8, 9, 11, 7, 7, 12, 7, 6, 15, 13, 11, 9, 7, 15, 11, 8, 6, 6, 14, 12, 13, 5, 14, 13, 13, 7, 5, 15, 5, 8, 11, 14, 14, 6, 14, 6, 9, 12, 9, 12, 5, 15, 8, 8, 5, 12, 9, 12, 5, 14, 6, 8, 13, 6, 5, 15, 13, 11, 11];
+
+            // The size, in bytes, of a word.
+            var word_size = 4;
+
+            // The size, in bytes, of a 16-words block.
+            var block_size = 64;
+
+            // The number of the 16-words blocks.
+            var t = padded.byteLength / block_size;
+
+            //  The message after padding consists of t 16-word blocks that
+            // are denoted with X_i[j], with 0≤i≤(t − 1) and 0≤j≤15.
+            var X = new Array(t).fill(undefined).map(function (_, i) {
+                return function (j) {
+                    return new DataView(padded, i * block_size, block_size).getUint32(j * word_size, true // Little-endian
+                    );
+                };
+            });
+
+            //  The result of RIPEMD-160 is contained in five 32-bit words,
+            // which form the internal state of the algorithm. The final
+            // content of these five 32-bit words is converted to a 160-bit
+            // string, again using the little-endian convention.
+            var h = [0x67452301, // h_0
+                0xEFCDAB89, // h_1
+                0x98BADCFE, // h_2
+                0x10325476, // h_3
+                0xC3D2E1F0 // h_4
+            ];
+
+            for (var i = 0; i < t; ++i) {
+                var A = h[0],
+                  B = h[1],
+                  C = h[2],
+                  D = h[3],
+                  E = h[4];
+                var AP = A,
+                  BP = B,
+                  CP = C,
+                  DP = D,
+                  EP = E;
+                for (var j = 0; j < 80; ++j) {
+                    // Left rounds
+                    var _T = RIPEMD160.add_modulo32(RIPEMD160.rol32(RIPEMD160.add_modulo32(A, RIPEMD160.f(j, B, C, D), X[i](r[j]), RIPEMD160.K(j)), s[j]), E);
+                    A = E;
+                    E = D;
+                    D = RIPEMD160.rol32(C, 10);
+                    C = B;
+                    B = _T;
+
+                    // Right rounds
+                    _T = RIPEMD160.add_modulo32(RIPEMD160.rol32(RIPEMD160.add_modulo32(AP, RIPEMD160.f(79 - j, BP, CP, DP), X[i](rP[j]), RIPEMD160.KP(j)), sP[j]), EP);
+                    AP = EP;
+                    EP = DP;
+                    DP = RIPEMD160.rol32(CP, 10);
+                    CP = BP;
+                    BP = _T;
+                }
+                var T = RIPEMD160.add_modulo32(h[1], C, DP);
+                h[1] = RIPEMD160.add_modulo32(h[2], D, EP);
+                h[2] = RIPEMD160.add_modulo32(h[3], E, AP);
+                h[3] = RIPEMD160.add_modulo32(h[4], A, BP);
+                h[4] = RIPEMD160.add_modulo32(h[0], B, CP);
+                h[0] = T;
+            }
+
+            //  The final output string then consists of the concatenatation
+            // of h_0, h_1, h_2, h_3, and h_4 after converting each h_i to a
+            // 4-byte string using the little-endian convention.
+            var result = new ArrayBuffer(20);
+            var data_view = new DataView(result);
+            h.forEach(function (h_i, i) {
+                return data_view.setUint32(i * 4, h_i, true);
+            });
+            return result;
+        }
+    }]);
+
+    return RIPEMD160;
+}();
+
+module.exports = {
+    RIPEMD160: RIPEMD160
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/eosjs/src/abi.abi.json":
+/*!*********************************************!*\
+  !*** ./node_modules/eosjs/src/abi.abi.json ***!
+  \*********************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = JSON.parse('{"version":"eosio::abi/1.1","structs":[{"name":"extensions_entry","base":"","fields":[{"name":"tag","type":"uint16"},{"name":"value","type":"bytes"}]},{"name":"type_def","base":"","fields":[{"name":"new_type_name","type":"string"},{"name":"type","type":"string"}]},{"name":"field_def","base":"","fields":[{"name":"name","type":"string"},{"name":"type","type":"string"}]},{"name":"struct_def","base":"","fields":[{"name":"name","type":"string"},{"name":"base","type":"string"},{"name":"fields","type":"field_def[]"}]},{"name":"action_def","base":"","fields":[{"name":"name","type":"name"},{"name":"type","type":"string"},{"name":"ricardian_contract","type":"string"}]},{"name":"table_def","base":"","fields":[{"name":"name","type":"name"},{"name":"index_type","type":"string"},{"name":"key_names","type":"string[]"},{"name":"key_types","type":"string[]"},{"name":"type","type":"string"}]},{"name":"clause_pair","base":"","fields":[{"name":"id","type":"string"},{"name":"body","type":"string"}]},{"name":"error_message","base":"","fields":[{"name":"error_code","type":"uint64"},{"name":"error_msg","type":"string"}]},{"name":"variant_def","base":"","fields":[{"name":"name","type":"string"},{"name":"types","type":"string[]"}]},{"name":"abi_def","base":"","fields":[{"name":"version","type":"string"},{"name":"types","type":"type_def[]"},{"name":"structs","type":"struct_def[]"},{"name":"actions","type":"action_def[]"},{"name":"tables","type":"table_def[]"},{"name":"ricardian_clauses","type":"clause_pair[]"},{"name":"error_messages","type":"error_message[]"},{"name":"abi_extensions","type":"extensions_entry[]"},{"name":"variants","type":"variant_def[]$"}]}]}');
+
+/***/ }),
+
+/***/ "./node_modules/eosjs/src/transaction.abi.json":
+/*!*****************************************************!*\
+  !*** ./node_modules/eosjs/src/transaction.abi.json ***!
+  \*****************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = JSON.parse('{"version":"eosio::abi/1.0","types":[{"new_type_name":"account_name","type":"name"},{"new_type_name":"action_name","type":"name"},{"new_type_name":"permission_name","type":"name"}],"structs":[{"name":"permission_level","base":"","fields":[{"name":"actor","type":"account_name"},{"name":"permission","type":"permission_name"}]},{"name":"action","base":"","fields":[{"name":"account","type":"account_name"},{"name":"name","type":"action_name"},{"name":"authorization","type":"permission_level[]"},{"name":"data","type":"bytes"}]},{"name":"extension","base":"","fields":[{"name":"type","type":"uint16"},{"name":"data","type":"bytes"}]},{"name":"transaction_header","base":"","fields":[{"name":"expiration","type":"time_point_sec"},{"name":"ref_block_num","type":"uint16"},{"name":"ref_block_prefix","type":"uint32"},{"name":"max_net_usage_words","type":"varuint32"},{"name":"max_cpu_usage_ms","type":"uint8"},{"name":"delay_sec","type":"varuint32"}]},{"name":"transaction","base":"transaction_header","fields":[{"name":"context_free_actions","type":"action[]"},{"name":"actions","type":"action[]"},{"name":"transaction_extensions","type":"extension[]"}]}]}');
+
+/***/ }),
+
 /***/ "./node_modules/es-abstract/helpers/getOwnPropertyDescriptor.js":
 /*!**********************************************************************!*\
   !*** ./node_modules/es-abstract/helpers/getOwnPropertyDescriptor.js ***!
@@ -96612,10 +99856,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 const idlFactory = ({ IDL }) => {
   return IDL.Service({
-    'getuser' : IDL.Func([IDL.Text], [IDL.Text], []),
-    'getusers' : IDL.Func([], [IDL.Text], []),
+    'claim' : IDL.Func([IDL.Text], [IDL.Text], []),
+    'fetchuser' : IDL.Func([IDL.Text], [IDL.Text], []),
+    'get_balance' : IDL.Func([IDL.Text], [IDL.Text], []),
+    'getnumusers' : IDL.Func([], [IDL.Text], []),
     'greet' : IDL.Func([IDL.Text], [IDL.Text], []),
-    'storeid' : IDL.Func([IDL.Text, IDL.Text], [IDL.Text], []),
+    'inc' : IDL.Func([], [IDL.Principal], []),
+    'storeuser' : IDL.Func([IDL.Text, IDL.Text, IDL.Text], [IDL.Text], []),
+    'switchuser' : IDL.Func([IDL.Text, IDL.Text], [IDL.Text], []),
   });
 };
 const init = ({ IDL }) => { return []; };
@@ -96645,7 +99893,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 // CANISTER_ID is replaced by webpack based on node environment
-const canisterId = "rwlgt-iiaaa-aaaaa-aaaaa-cai";
+const canisterId = "rrkah-fqaaa-aaaaa-aaaaq-cai";
 
 /**
  * 
@@ -96821,43 +100069,53 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+const { JsonRpc, Api } = __webpack_require__(/*! eosjs */ "./node_modules/eosjs/dist/index.js");
 
 
 let signedIn = false
 let client
 let principal = ""
 let proton_account = ""
+let chain = "dfinity"
 
+const rpc = new JsonRpc("https://protontestnet.greymass.com", { fetch })
 
-document.getElementById("storeUserDfinityBtn").addEventListener("click", async () => {
+// get BTCprice button
+document.getElementById("storeBTCpriceBtn").addEventListener("click", async () => {
+  btcPrice = getBTCPrice();
+  console.log("After Calling getBTCPrice(), price = " + btcPrice)
 
-  // dummy variables - for testing
-  // let proton_account1 = "arnoldlayne";
-  // let name_value = nameToUint64(proton_account);
-  // let principal_id1 = "jni4i-spimh-lkiau-m2ke6-pg7db-qi3ql-cop5r-nc4sh-z7p5e-gu5md-lqe";
+  document.getElementById('BTCprice').innerHTML = 'Bitcoin price: ' + btcPrice // this displays the price up in the template
+      
 
-  const reply = await _declarations_hello__WEBPACK_IMPORTED_MODULE_0__.hello.storeid(proton_account, principal);
-  console.log("Return from storeid: " + reply);
-  document.getElementById("storeDfinityResult").innerText = reply;
 
 });
 
-document.getElementById("storeUserProtonBtn").addEventListener("click", async () => {
+// register button
+document.getElementById("registerBtn").addEventListener("click", async () => {
 
-  // Send Transaction to Proton
-		
+  // get the chain the user has selected
+  chain = document.getElementById("chainSelect").value;
+
+  // register on dfinity
+  const reply = await _declarations_hello__WEBPACK_IMPORTED_MODULE_0__.hello.storeuser(proton_account, principal, chain);
+  console.log("Return from storeuser: " + reply);
+  document.getElementById("registerResult").innerText = reply;
+
+  // register on Proton
   const result = await session.transact({
     transaction: {
       actions: [
         {
-          // Token contract for btc records
-          account: "cronacle",
-          // Action name
-          name: "storeid",
+          // Proton smart contract for dfinity claim
+          account: "dfinityclaim",
+          // Action names
+          name: "reguser",
           // Action parameters
           data: {
             user: session.auth.actor,
-            principal: principal
+            principal: principal,
+            chain: chain
           },
           authorization: [session.auth],
         },
@@ -96865,9 +100123,230 @@ document.getElementById("storeUserProtonBtn").addEventListener("click", async ()
     },
     broadcast: true,
   });
-  document.getElementById("storeProtonResult").innerText = "Stored " + session.auth.actor + " / " + principal;
+  document.getElementById("registerResult").innerText = "Registered as account " + session.auth.actor + ", principal " + principal + ", chain " + chain;
 
 });
+
+document.getElementById("dfinityGetBtn").addEventListener("click", async () => {
+
+  const reply = await _declarations_hello__WEBPACK_IMPORTED_MODULE_0__.hello.fetchuser(proton_account);
+  console.log("Return from fetchuser: " + reply);
+  document.getElementById("dfinityGetResult").innerText = reply;
+
+});
+
+
+// Proton get user
+document.getElementById("protonGetBtn").addEventListener("click", async () => {
+
+  console.log('looking up Proton user record for ' + proton_account);
+  // get the user record
+  let system_params = {
+              json: true,
+              code: 'dfinityclaim',   // account containing smart contract
+              scope: 'dfinityclaim',  // the subset of the table to query
+              table: 'users',         // the name of the table
+              lower_bound: proton_account,
+              upper_bound: proton_account,
+              limit: 1                // limit on number of rows returned
+      }
+
+  let user_result = await rpc.get_table_rows(system_params);
+
+  let proton_principal = user_result.rows[0].dfinity_principal;
+  let proton_chain = user_result.rows[0].chain;
+  let proton_balance = user_result.rows[0].balance;
+  let userSummary = "Proton: " + proton_account + " principal: " + proton_principal + " chain: " + proton_chain + " balance: " + proton_balance;
+
+  console.log("Return from proton user read: " + userSummary);
+  document.getElementById("protonGetResult").innerText = userSummary;
+
+});
+
+// update balances
+async function updateBalances() {
+
+  console.log("Proton account = >" + proton_account + "<")
+  let proton_balance_str = "0"
+  let ic_balance_str = "0"
+
+  // proton balance
+  if (proton_account != "") {
+    // get balance
+    let user_params = {
+      json: true,
+      code: 'dfinityclaim',   // account containing smart contract
+      scope: 'dfinityclaim',  // the subset of the table to query
+      table: 'users',         // the name of the table
+      lower_bound: proton_account,
+      upper_bound: proton_account,
+      limit: 1                // limit on number of rows returned
+    }
+
+    let result = await rpc.get_table_rows(user_params);
+    let proton_balance = result.rows[0].balance;
+    proton_balance_str = proton_balance.toString()
+    console.log(proton_balance_str)
+  }
+
+  // IC balance
+  ic_balance_str = await _declarations_hello__WEBPACK_IMPORTED_MODULE_0__.hello.get_balance(proton_account);
+
+  // update display
+  document.getElementById("proton_balance").innerText = proton_balance_str;
+  document.getElementById("ic_balance").innerText = ic_balance_str;
+  
+}
+
+document.getElementById("claimBtn").addEventListener("click", async () => {
+
+  chain = document.getElementById("chainSelect").value;
+
+  // claim on dfinity
+  if (chain == "dfinity") {
+    const reply = await _declarations_hello__WEBPACK_IMPORTED_MODULE_0__.hello.claim(proton_account);
+    console.log("Return from dfinity claim: " + reply);
+    document.getElementById("claimResult").innerText = reply;
+  }
+
+  // claim on Proton
+  if (chain == "proton") {
+    // get balance before
+    let user_params = {
+      json: true,
+      code: 'dfinityclaim',   // account containing smart contract
+      scope: 'dfinityclaim',  // the subset of the table to query
+      table: 'users',         // the name of the table
+      lower_bound: proton_account,
+      upper_bound: proton_account,
+      limit: 1                // limit on number of rows returned
+    }
+
+    let before_result = await rpc.get_table_rows(user_params);
+    console.log(before_result);
+    let before_balance = before_result.rows[0].balance;
+
+    const result = await session.transact({
+      transaction: {
+        actions: [
+          {
+            // Proton smart contract for dfinity claim
+            account: "dfinityclaim",
+            // Action names
+            name: "claim",
+            // Action parameters
+            data: {
+              user: session.auth.actor
+            },
+            authorization: [session.auth],
+          },
+        ],
+      },
+      broadcast: true,
+    });
+
+    let after_result = await rpc.get_table_rows(user_params);
+    let after_balance = after_result.rows[0].balance;
+
+    document.getElementById("claimResult").innerText = "claim successful, Proton balance " + before_balance + " → " + after_balance;
+  }
+  });
+
+  document.getElementById("mintBtn").addEventListener("click", async () => {
+
+    // get Freeos balance before
+    let user_params = {
+      json: true,
+      code: 'freeostokens',   // account containing smart contract
+      scope: proton_account,  // the subset of the table to query
+      table: 'accounts',      // the name of the table
+      limit: 1                // limit on number of rows returned
+    }
+  
+      let before_result = await rpc.get_table_rows(user_params);
+      console.log(before_result);
+      let before_balance = before_result.rows[0].balance;
+  
+      // perform the XPR transfer - AND - mint Freeos
+      const result = await session.transact({
+        transaction: {
+          actions: [
+            {
+              // Proton smart contract
+              account: "eosio.token",
+              // Action names
+              name: "transfer",
+              // Action parameters
+              data: {
+                from: session.auth.actor,
+                to: 'freeosgov',
+                quantity: '1.0000 XPR',
+                memo: 'freeos mint fee'
+              },
+              authorization: [session.auth],
+            },
+            {
+              // Proton smart contract
+              account: "freeosgov",
+              // Action names
+              name: "mintfreeos",
+              // Action parameters
+              data: {
+                owner: session.auth.actor,
+                quantity: '1.0000 POINT'
+              },
+              authorization: [session.auth],
+            }
+          ],
+        },
+        broadcast: true,
+      });
+  
+      let after_result = await rpc.get_table_rows(user_params);
+      let after_balance = after_result.rows[0].balance;
+  
+      document.getElementById("mintResult").innerText = "mint successful, Freeos balance " + before_balance + " → " + after_balance;
+
+});
+
+document.getElementById("chainSelect").addEventListener("change", async () => {
+
+  chain = document.getElementById("chainSelect").value;
+  console.log("chain selected: " + chain);
+
+  // update dfinity
+  const reply = await _declarations_hello__WEBPACK_IMPORTED_MODULE_0__.hello.switchuser(proton_account, chain);
+
+  // update Proton
+  const result = await session.transact({
+    transaction: {
+      actions: [
+        {
+          // Proton smart contract for dfinity claim
+          account: "dfinityclaim",
+          // Action names
+          name: "switchchain",
+          // Action parameters
+          data: {
+            user: session.auth.actor,
+            chain: chain
+          },
+          authorization: [session.auth],
+        },
+      ],
+    },
+    broadcast: true,
+  });
+
+});
+
+function showFunctionTable() {
+  if (principal !== "" && proton_account !== "") {
+      document.getElementById("functionTable").style.visibility = 'visible';
+    } else {
+      document.getElementById("functionTable").style.visibility = 'hidden';
+    }
+}
 
 
 document.getElementById("dfinitySignInBtn").addEventListener("click", async () => {
@@ -96898,16 +100377,19 @@ document.getElementById("dfinitySignInBtn").addEventListener("click", async () =
     signedIn = true
     
     document.getElementById("principal_id").innerText = principal;
+
+    showFunctionTable();
+    
 });
 
 // Constants
-const appIdentifier = "cronacle";
+const appIdentifier = "dfinityclaim";
 let link, session;
 
 async function createLink({ restoreSession }) {
   const result = await (0,_proton_web_sdk__WEBPACK_IMPORTED_MODULE_1__.ConnectWallet)({
     linkOptions: {
-      endpoints: ["https://proton.greymass.com"],
+      endpoints: ["https://protontestnet.greymass.com"],
       restoreSession,
     },
     transportOptions: {
@@ -96940,56 +100422,56 @@ document.getElementById("protonSignInBtn").addEventListener("click", async () =>
   await createLink({ restoreSession: false });
   console.log("User authorization:", session.auth); // { actor: 'fred', permission: 'active }
   document.getElementById("proton_account").innerText = session.auth.actor;
+
+  showFunctionTable();
 });
 
-document.getElementById("storeBTCpriceBtn").addEventListener("click", async () => {
-  var request = new XMLHttpRequest() // inserted the CoinGecko stuff from prior
-		let btc_value = "";
+function getBTCPrice() {
+  var request = new XMLHttpRequest()
+  let btc_value = "";
 
-		// Open a new connection, using the GET request on the URL endpoint
-		request.open('GET', 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin', true)
+  // Open a new connection, using the GET request on the URL endpoint
+  request.open('GET', 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin', true)
 
-		request.onload = function () {
-		// Begin accessing JSON data here
-		var newdata = JSON.parse(this.response)
-		console.log(newdata)
-
-		newdata.forEach((object) => {
-			console.log(object.name)
-			console.log(object.current_price)
-			// `vm.a` is now reactive
-			document.getElementById('BTCprice').innerHTML = object.current_price + ' is the price of Bitcoin' // this displays the price up in the template.  There might be a more Vue way to do this, but I don't know how.
-			btc_value = object.current_price;
-		})
-
-		// store the value
-		// Send Transaction
-		const result = session.transact({
-			transaction: {
-				actions: [
-					{
-						// Token contract for btc records
-						account: "cronacle",
-						// Action name
-						name: "storebtc",
-						// Action parameters
-						data: {
-							btcprice: btc_value
-						},
-						authorization: [session.auth],
-					},
-				],
-			},
-			broadcast: true,
-		});
-		// console.log("Transaction ID", result.processed.id);
-    }
+  request.onload = function () {
+    // Begin accessing JSON data here
+    var newdata = JSON.parse(this.response)
     
-    // document.getElementById("BTCprice").innerText = 'The price of Bitcoin is ' + btc_value;
+    newdata.forEach((object) => {
+      console.log("object name: " + object.name)
+      console.log("object current_price: " + object.current_price)
+      console.log("object symbol: " + object.symbol)
+      btc_value = object.current_price;
+    })
 
-		// Send request
-		request.send()
-});
+    // store the value
+    // Send Transaction
+    if (session) {  // if logged in to Proton
+      const result = session.transact({
+        transaction: {
+          actions: [
+            {
+              // Token contract for btc records
+              account: "dfinityclaim",
+              // Action name
+              name: "storebtc",
+              // Action parameters
+              data: {
+                btcprice: btc_value
+              },
+              authorization: [session.auth],
+            },
+          ],
+        },
+        broadcast: true,
+      });
+    } // end if if (session)
+
+  } // end of request.onload
+
+  // Send request
+  request.send()
+}
 })();
 
 /******/ })()

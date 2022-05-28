@@ -1,6 +1,10 @@
 service : {
-  getuser: (text) -> (text);
-  getusers: () -> (text);
+  claim: (text) -> (text);
+  fetchuser: (text) -> (text);
+  get_balance: (text) -> (text);
+  getnumusers: () -> (text);
   greet: (text) -> (text);
-  storeid: (text, text) -> (text);
+  inc: () -> (principal);
+  storeuser: (text, text, text) -> (text);
+  switchuser: (text, text) -> (text);
 }
